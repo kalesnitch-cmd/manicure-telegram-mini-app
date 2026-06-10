@@ -5,6 +5,7 @@ import Home from './components/Home';
 import Book from './components/Book';
 import MyBookings from './components/MyBookings';
 import Portfolio from './components/Portfolio';
+import { LotusIcon, CalendarIcon, NailIcon, SparklesIcon } from './components/Icons';
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -158,28 +159,36 @@ function App() {
           onClick={() => setTab('home')} 
           className={`nav-item ${tab === 'home' ? 'active' : ''}`}
         >
-          <span className="nav-icon">🌸</span>
+          <span className="nav-icon">
+            <LotusIcon color={tab === 'home' ? 'var(--rose-dark)' : 'var(--text-muted)'} size={22} />
+          </span>
           <span>Главная</span>
         </button>
         <button 
           onClick={() => setTab('book')} 
           className={`nav-item ${tab === 'book' ? 'active' : ''}`}
         >
-          <span className="nav-icon">📅</span>
+          <span className="nav-icon">
+            <CalendarIcon color={tab === 'book' ? 'var(--rose-dark)' : 'var(--text-muted)'} size={22} />
+          </span>
           <span>Записаться</span>
         </button>
         <button 
           onClick={() => setTab('bookings')} 
           className={`nav-item ${tab === 'bookings' ? 'active' : ''}`}
         >
-          <span className="nav-icon">💅</span>
+          <span className="nav-icon">
+            <NailIcon color={tab === 'bookings' ? 'var(--rose-dark)' : 'var(--text-muted)'} size={22} />
+          </span>
           <span>Мои записи</span>
         </button>
         <button 
           onClick={() => setTab('portfolio')} 
           className={`nav-item ${tab === 'portfolio' ? 'active' : ''}`}
         >
-          <span className="nav-icon">✨</span>
+          <span className="nav-icon">
+            <SparklesIcon color={tab === 'portfolio' ? 'var(--rose-dark)' : 'var(--text-muted)'} size={22} />
+          </span>
           <span>Портфолио</span>
         </button>
       </nav>

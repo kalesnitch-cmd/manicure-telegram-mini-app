@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { ClockIcon, LocationIcon, CheckCircleIcon } from './Icons';
 
 const SERVICES = [
   { id: 'classic', name: 'Комби-маникюр без покрытия', price: '1 200 ₽', duration: '60 мин' },
@@ -25,17 +26,14 @@ const Book = ({ onBookingComplete, setTab }) => {
 
   // Calendar setup for June 2026
   // June 2026 starts on a Monday (1st) and has 30 days.
-  // Today's date is assumed to be June 10, 2026 based on mock system environment.
   const currentYear = 2026;
   const currentMonthIdx = 5; // June (0-indexed)
   const monthName = 'Июнь 2026';
   const daysInJune = 30;
-  const startDayOfWeek = 0; // Monday starts on index 0 in Russian format (Mon-Sun)
 
   const daysArray = Array.from({ length: daysInJune }, (_, i) => i + 1);
 
   const handleDaySelect = (day) => {
-    // Enable booking for day >= 11 (June 10 is today, let's allow future booking from June 11)
     if (day < 11) return;
     setSelectedDate(day);
     setSelectedTime(null); // Reset selected time
@@ -72,7 +70,7 @@ const Book = ({ onBookingComplete, setTab }) => {
 
   return (
     <>
-      <div className="scroll-container fade-in" style={{ padding: '20px 20px 130px 20px' }}>
+      <div className="scroll-container fade-in" style={{ padding: '20px 20px 95px 20px' }}>
         <h2 style={{ fontSize: '1.6rem', marginBottom: '16px', textAlign: 'left' }}>Запись на маникюр</h2>
 
         {/* Step 1: Select Service */}
@@ -99,7 +97,10 @@ const Book = ({ onBookingComplete, setTab }) => {
               >
                 <div style={{ textAlign: 'left', flex: 1, paddingRight: '8px' }}>
                   <div style={{ fontWeight: '600', fontSize: '0.9rem', color: 'var(--text-main)' }}>{s.name}</div>
-                  <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>⏱ {s.duration}</div>
+                  <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '4px', marginTop: '4px' }}>
+                    <ClockIcon size={12} color="var(--text-muted)" />
+                    <span>{s.duration}</span>
+                  </div>
                 </div>
                 <div style={{ fontWeight: '700', color: 'var(--rose-dark)', fontSize: '0.95rem' }}>{s.price}</div>
               </div>
@@ -219,30 +220,33 @@ const Book = ({ onBookingComplete, setTab }) => {
         {selectedDate && selectedTime && (
           <div className="fade-in" style={{ marginBottom: '20px' }}>
             <button onClick={handleBooking} className="btn-primary">
-              Записаться на {selectedDate} июня в {selectedTime} 🌸
+              Записаться на {selectedDate} июня в {selectedTime}
             </button>
           </div>
         )}
       </div>
 
-      {/* Success Popup Modal - RENDERED OUTSIDE OF SCROLL CONTAINER */}
+      {/* Success Popup Modal */}
       {showSuccess && successDetails && (
         <div className="success-overlay" style={{ position: 'absolute' }}>
-          <div className="success-box" style={{ transform: 'none' }}>
-            <span className="success-icon">✨</span>
+          <div className="success-box" style={{ transform: 'none', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <div style={{ marginBottom: '16px' }}><CheckCircleIcon size={52} /></div>
             <h2 style={{ fontSize: '1.5rem', marginBottom: '12px' }}>Запись подтверждена!</h2>
             <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)', marginBottom: '20px', lineHeight: '1.5' }}>
               Вы успешно записались на <strong>{successDetails.service}</strong>.<br />
               Ждем вас <strong>{successDetails.date}</strong> в <strong>{successDetails.time}</strong>.
             </p>
             
-            <div className="glass-card" style={{ textAlign: 'left', background: 'var(--rose-light)', padding: '12px 16px', marginBottom: '20px' }}>
-              <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>📍 Адрес студии:</div>
-              <div style={{ fontSize: '0.85rem', fontWeight: '600' }}>ул. Элегантная, д. 15, офис 302</div>
+            <div className="glass-card" style={{ textAlign: 'left', background: 'var(--rose-light)', padding: '14px 16px', marginBottom: '20px', width: '100%', display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+              <div style={{ marginTop: '2px' }}><LocationIcon size={16} /></div>
+              <div>
+                <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Адрес студии:</div>
+                <div style={{ fontSize: '0.85rem', fontWeight: '600' }}>ул. Элегантная, д. 15, офис 302</div>
+              </div>
             </div>
 
             <button onClick={handleSuccessClose} className="btn-primary">
-              Отлично 🌸
+              Отлично
             </button>
           </div>
         </div>

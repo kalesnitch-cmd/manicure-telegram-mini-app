@@ -23,10 +23,10 @@ const Portfolio = () => {
   };
 
   return (
-    <div className="scroll-container fade-in" style={{ padding: '20px 20px 130px 20px' }}>
+    <div className="scroll-container fade-in" style={{ padding: '20px 20px 95px 20px' }}>
       <h2 style={{ fontSize: '1.6rem', marginBottom: '4px', textAlign: 'left' }}>Наши работы</h2>
       <p style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: '20px', textAlign: 'left' }}>
-        примерить образ на свои ногти ✨
+        примерить образ на свои ногти
       </p>
 
       {/* Grid Layout */}
@@ -41,7 +41,7 @@ const Portfolio = () => {
               display: 'flex',
               flexDirection: 'column',
               cursor: 'pointer',
-              background: 'rgba(255, 255, 255, 0.45)',
+              background: '#ffffff', // High contrast solid white card
               borderRadius: 'var(--border-radius-sm)',
               overflow: 'hidden',
               transition: 'var(--transition)'
@@ -110,9 +110,8 @@ const Portfolio = () => {
               height: '40px',
               borderRadius: '50%',
               border: 'none',
-              background: 'rgba(255,255,255,0.1)',
+              background: 'rgba(255,255,255,0.15)',
               color: 'white',
-              fontSize: '1.5rem',
               cursor: 'pointer',
               display: 'flex',
               justifyContent: 'center',
@@ -120,7 +119,10 @@ const Portfolio = () => {
               zIndex: 1110
             }}
           >
-            ✕
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
           </button>
 
           {/* Large Image */}
@@ -151,7 +153,7 @@ const Portfolio = () => {
             style={{
               maxWidth: '400px',
               width: '100%',
-              background: 'rgba(255,255,255,0.95)',
+              background: '#ffffff',
               textAlign: 'left',
               padding: '20px',
               color: 'var(--text-main)'

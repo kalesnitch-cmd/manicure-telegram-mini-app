@@ -1,8 +1,9 @@
 import React from 'react';
+import { ClockIcon, LocationIcon, ShieldCleanIcon, GemIcon, AwardIcon } from './Icons';
 
 const Home = ({ user, setTab }) => {
   return (
-    <div className="scroll-container fade-in" style={{ padding: '24px 20px 130px 20px' }}>
+    <div className="scroll-container fade-in" style={{ padding: '24px 20px 95px 20px' }}>
       {/* Profile Header Card */}
       <div className="glass-panel" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', marginBottom: '24px', position: 'relative', overflow: 'hidden' }}>
         {/* Absolute Gold decorative lines */}
@@ -37,7 +38,7 @@ const Home = ({ user, setTab }) => {
         </div>
 
         <h2 style={{ fontSize: '1.8rem', fontWeight: '700', marginBottom: '4px' }}>
-          Привет, {user.name}! 🌸
+          Привет, {user.name}!
         </h2>
         <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', fontWeight: '500' }}>
           {user.phone}
@@ -53,11 +54,11 @@ const Home = ({ user, setTab }) => {
         
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.85rem', color: 'var(--text-main)', textAlign: 'left' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span>🕒</span>
+            <ClockIcon size={16} />
             <span>Ежедневно с 10:00 до 22:00</span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span>📍</span>
+            <LocationIcon size={16} />
             <span>ул. Элегантная, д. 15, офис 302</span>
           </div>
         </div>
@@ -66,7 +67,7 @@ const Home = ({ user, setTab }) => {
       {/* Master Profile Info */}
       <div className="glass-panel" style={{ padding: '20px', textAlign: 'left', borderTop: '4.5px solid var(--gold-accent)' }}>
         <h3 style={{ fontSize: '1.25rem', marginBottom: '12px', fontFamily: 'var(--font-serif)', display: 'flex', alignItems: 'center', gap: '8px' }}>
-          О мастере Валерии ✨
+          О мастере Валерии
         </h3>
         
         {/* Experience badges */}
@@ -90,7 +91,7 @@ const Home = ({ user, setTab }) => {
         {/* Studio quality checklist */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
           <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
-            <span style={{ fontSize: '1.1rem' }}>🧼</span>
+            <div style={{ marginTop: '2px' }}><ShieldCleanIcon size={20} /></div>
             <div>
               <div style={{ fontWeight: '700', fontSize: '0.85rem', color: 'var(--text-main)' }}>100% Стерильность</div>
               <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Трехэтапная обработка инструментов по СанПиН (Сухожар ГП-10), крафт-пакет вскрывается при вас.</div>
@@ -98,7 +99,7 @@ const Home = ({ user, setTab }) => {
           </div>
 
           <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
-            <span style={{ fontSize: '1.1rem' }}>💎</span>
+            <div style={{ marginTop: '2px' }}><GemIcon size={20} /></div>
             <div>
               <div style={{ fontWeight: '700', fontSize: '0.85rem', color: 'var(--text-main)' }}>Премиум материалы</div>
               <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Работаю исключительно на проверенных качественных базах и пигментах (Luxio, Uno, E.Mi), никакого скола покрытия.</div>
@@ -106,7 +107,7 @@ const Home = ({ user, setTab }) => {
           </div>
 
           <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
-            <span style={{ fontSize: '1.1rem' }}>🎓</span>
+            <div style={{ marginTop: '2px' }}><AwardIcon size={20} /></div>
             <div>
               <div style={{ fontWeight: '700', fontSize: '0.85rem', color: 'var(--text-main)' }}>Сертифицированный специалист</div>
               <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Выпускница академии EMI School, победительница регионального конкурса Nail Art 2024.</div>
