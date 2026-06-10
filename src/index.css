@@ -16,12 +16,12 @@
   --button-gradient: linear-gradient(135deg, #b07d62 0%, #8f5d43 100%);
   --bg-gradient: linear-gradient(180deg, #fff5f5 0%, #ffe3e3 100%);
   
-  --glass-bg: rgba(255, 255, 255, 0.7);
-  --glass-border: rgba(255, 255, 255, 0.4);
-  --glass-shadow: 0 8px 32px 0 rgba(176, 125, 98, 0.15);
+  --glass-bg: rgba(255, 255, 255, 0.88);
+  --glass-border: rgba(176, 125, 98, 0.35);
+  --glass-shadow: 0 12px 36px rgba(143, 93, 67, 0.18);
   
-  --text-main: #4a3b32;
-  --text-muted: #8c7365;
+  --text-main: #3d2f26;
+  --text-muted: #7d6557;
   --text-white: #ffffff;
   --danger: #e63946;
   --success: #2a9d8f;
@@ -91,7 +91,8 @@ p, span, input, button {
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none;  /* IE and Edge */
   flex: 1;
-  padding-bottom: 90px; /* space for tab bar */
+  padding-bottom: 124px; /* Increased space so it sits comfortably above bottom nav bar */
+  box-sizing: border-box;
 }
 
 .scroll-container::-webkit-scrollbar {
@@ -170,22 +171,23 @@ p, span, input, button {
 /* Glassmorphism Styles */
 .glass-panel {
   background: var(--glass-bg);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1.5px solid var(--glass-border);
   border-radius: var(--border-radius);
   box-shadow: var(--glass-shadow);
   padding: 24px;
 }
 
 .glass-card {
-  background: rgba(255, 255, 255, 0.5);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.9); /* Increased opacity for high contrast */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1.5px solid rgba(176, 125, 98, 0.22); /* Darker border */
   border-radius: var(--border-radius-sm);
   padding: 16px;
   margin-bottom: 16px;
+  box-shadow: 0 4px 12px rgba(176, 125, 98, 0.08); /* Added shadow to lift it up */
   transition: var(--transition);
 }
 

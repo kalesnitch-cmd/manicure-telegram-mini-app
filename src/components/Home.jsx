@@ -20,7 +20,7 @@ const Home = ({ user, setTab }) => {
             boxShadow: '0 4px 15px rgba(212,175,55,0.3)'
           }}></div>
           <img 
-            src={user.avatar || '/images/avatar.png'} 
+            src={user.avatar || 'images/avatar.png'} 
             alt="Telegram Avatar" 
             style={{
               width: '84px',
@@ -32,7 +32,7 @@ const Home = ({ user, setTab }) => {
               border: '3px solid white',
               display: 'block'
             }}
-            onError={(e) => { e.target.src = '/images/avatar.png'; }}
+            onError={(e) => { e.target.src = 'images/avatar.png'; }}
           />
         </div>
 
@@ -63,42 +63,56 @@ const Home = ({ user, setTab }) => {
         </div>
       </div>
 
-      {/* Quick Action Tiles */}
-      <h3 style={{ fontSize: '1.1rem', marginBottom: '12px', textAlign: 'left', paddingLeft: '4px' }}>Услуги и действия</h3>
-      
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '20px' }}>
-        <div 
-          onClick={() => setTab('book')}
-          className="glass-card" 
-          style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '20px', cursor: 'pointer', textAlign: 'center', background: 'rgba(252, 213, 206, 0.4)' }}
-        >
-          <span style={{ fontSize: '2rem', marginBottom: '8px' }}>📅</span>
-          <span style={{ fontWeight: '600', fontSize: '0.9rem', color: 'var(--text-main)' }}>Записаться</span>
-          <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '4px' }}>Выбрать дату</span>
+      {/* Master Profile Info */}
+      <div className="glass-panel" style={{ padding: '20px', textAlign: 'left', borderTop: '4.5px solid var(--gold-accent)' }}>
+        <h3 style={{ fontSize: '1.25rem', marginBottom: '12px', fontFamily: 'var(--font-serif)', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          О мастере Валерии ✨
+        </h3>
+        
+        {/* Experience badges */}
+        <div style={{ display: 'flex', gap: '10px', marginBottom: '16px' }}>
+          <span style={{ fontSize: '0.75rem', fontWeight: '600', color: 'var(--rose-dark)', background: 'var(--rose-light)', padding: '4px 10px', borderRadius: '20px', border: '1px solid rgba(176,125,98,0.2)' }}>
+            Возраст: 24 года
+          </span>
+          <span style={{ fontSize: '0.75rem', fontWeight: '600', color: 'var(--rose-dark)', background: 'var(--rose-light)', padding: '4px 10px', borderRadius: '20px', border: '1px solid rgba(176,125,98,0.2)' }}>
+            Опыт: 5 лет
+          </span>
         </div>
 
-        <div 
-          onClick={() => setTab('bookings')}
-          className="glass-card" 
-          style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '20px', cursor: 'pointer', textAlign: 'center', background: 'rgba(255, 255, 255, 0.5)' }}
-        >
-          <span style={{ fontSize: '2rem', marginBottom: '8px' }}>💅</span>
-          <span style={{ fontWeight: '600', fontSize: '0.9rem', color: 'var(--text-main)' }}>Мои записи</span>
-          <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '4px' }}>Ваши визиты</span>
-        </div>
-      </div>
+        <p style={{ fontSize: '0.88rem', color: 'var(--text-main)', lineHeight: '1.5', marginBottom: '16px' }}>
+          Привет, девочки! Меня зовут Валерия, и я ваш сертифицированный мастер ногтевого сервиса. Специализируюсь на чистейшем комбинированном маникюре, идеальном выравнивании ногтевой пластины и прочном тонком покрытии. 
+        </p>
+        
+        <p style={{ fontSize: '0.88rem', color: 'var(--text-main)', lineHeight: '1.5', marginBottom: '20px' }}>
+          Люблю создавать эстетичные минималистичные дизайны, френч и аккуратную геометрию. Постоянно повышаю квалификацию, чтобы ваши ручки выглядели дорого и безупречно!
+        </p>
 
-      <div 
-        onClick={() => setTab('portfolio')}
-        className="glass-card"
-        style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '16px 20px', cursor: 'pointer', background: 'rgba(255, 255, 255, 0.5)' }}
-      >
-        <span style={{ fontSize: '1.8rem' }}>✨</span>
-        <div style={{ flex: 1, textAlign: 'left' }}>
-          <div style={{ fontWeight: '600', fontSize: '0.95rem' }}>Портфолио мастера</div>
-          <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Примеры лучших работ Валерии</div>
+        {/* Studio quality checklist */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
+            <span style={{ fontSize: '1.1rem' }}>🧼</span>
+            <div>
+              <div style={{ fontWeight: '700', fontSize: '0.85rem', color: 'var(--text-main)' }}>100% Стерильность</div>
+              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Трехэтапная обработка инструментов по СанПиН (Сухожар ГП-10), крафт-пакет вскрывается при вас.</div>
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
+            <span style={{ fontSize: '1.1rem' }}>💎</span>
+            <div>
+              <div style={{ fontWeight: '700', fontSize: '0.85rem', color: 'var(--text-main)' }}>Премиум материалы</div>
+              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Работаю исключительно на проверенных качественных базах и пигментах (Luxio, Uno, E.Mi), никакого скола покрытия.</div>
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
+            <span style={{ fontSize: '1.1rem' }}>🎓</span>
+            <div>
+              <div style={{ fontWeight: '700', fontSize: '0.85rem', color: 'var(--text-main)' }}>Сертифицированный специалист</div>
+              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Выпускница академии EMI School, победительница регионального конкурса Nail Art 2024.</div>
+            </div>
+          </div>
         </div>
-        <span style={{ fontSize: '1.2rem', color: 'var(--rose-dark)' }}>➔</span>
       </div>
     </div>
   );

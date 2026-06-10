@@ -32,7 +32,7 @@ function App() {
           window.tgUserPrefill = {
             id: tgUser.id,
             name: `${tgUser.first_name || ''} ${tgUser.last_name || ''}`.trim(),
-            avatar: tgUser.photo_url || '/images/avatar.png'
+            avatar: tgUser.photo_url || 'images/avatar.png'
           };
         }
       } else {
@@ -59,7 +59,7 @@ function App() {
       id: tgUser?.id || 'default_user',
       name: data.name,
       phone: data.phone,
-      avatar: tgUser?.photo_url || '/images/avatar.png' // Use generated avatar if no telegram photo
+      avatar: tgUser?.photo_url || 'images/avatar.png' // Use generated avatar if no telegram photo
     };
 
     if (tgUser?.id) {
@@ -92,9 +92,28 @@ function App() {
     }
   };
 
+  // Get background image relative path based on state
+  const getBackgroundImage = () => {
+    if (!user) return 'images/bg_register.png';
+    switch (tab) {
+      case 'home':
+        return 'images/bg.png';
+      case 'book':
+        return 'images/bg_book.png';
+      case 'bookings':
+        return 'images/bg_bookings.png';
+      case 'portfolio':
+        return 'images/bg_portfolio.png';
+      default:
+        return 'images/bg.png';
+    }
+  };
+
   if (loading) {
     return <Loader onLoaded={() => setLoading(false)} />;
   }
+
+  const bgImage = getBackgroundImage();
 
   // If user is not registered, show Register Screen
   if (!user) {
@@ -103,11 +122,12 @@ function App() {
         style={{
           width: '100%',
           height: '100%',
-          backgroundImage: 'linear-gradient(rgba(255, 245, 245, 0.8), rgba(255, 227, 227, 0.85)), url("/images/bg.png")',
+          backgroundImage: `linear-gradient(rgba(255, 245, 245, 0.8), rgba(255, 227, 227, 0.85)), url("${bgImage}")`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           display: 'flex',
-          flexDirection: 'column'
+          flexDirection: 'column',
+          transition: 'background-image 0.5s ease-in-out'
         }}
       >
         <Register onRegister={handleRegister} />
@@ -120,12 +140,13 @@ function App() {
       style={{
         width: '100%',
         height: '100%',
-        backgroundImage: 'linear-gradient(rgba(255, 248, 248, 0.82), rgba(255, 235, 235, 0.88)), url("/images/bg.png")',
+        backgroundImage: `linear-gradient(rgba(255, 248, 248, 0.82), rgba(255, 235, 235, 0.88)), url("${bgImage}")`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         display: 'flex',
         flexDirection: 'column',
-        position: 'relative'
+        position: 'relative',
+        transition: 'background-image 0.5s ease-in-out'
       }}
     >
       {/* Scrollable container for tab contents */}
