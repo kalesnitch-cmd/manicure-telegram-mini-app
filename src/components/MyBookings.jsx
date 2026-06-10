@@ -28,7 +28,7 @@ const MyBookings = ({ setTab, refreshTrigger }) => {
   };
 
   return (
-    <div className="scroll-container fade-in" style={{ padding: '20px' }}>
+    <div className="scroll-container fade-in" style={{ padding: '20px 20px 130px 20px' }}>
       <h2 style={{ fontSize: '1.6rem', marginBottom: '20px', textAlign: 'left' }}>Мои записи</h2>
 
       {/* ACTIVE BOOKINGS SECTION */}

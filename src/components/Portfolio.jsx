@@ -23,7 +23,7 @@ const Portfolio = () => {
   };
 
   return (
-    <div className="scroll-container fade-in" style={{ padding: '20px' }}>
+    <div className="scroll-container fade-in" style={{ padding: '20px 20px 130px 20px' }}>
       <h2 style={{ fontSize: '1.6rem', marginBottom: '4px', textAlign: 'left' }}>Наши работы</h2>
       <p style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: '20px', textAlign: 'left' }}>
         примерить образ на свои ногти ✨

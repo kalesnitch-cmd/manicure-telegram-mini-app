@@ -2,7 +2,7 @@ import React from 'react';
 
 const Home = ({ user, setTab }) => {
   return (
-    <div className="scroll-container fade-in" style={{ padding: '24px 20px' }}>
+    <div className="scroll-container fade-in" style={{ padding: '24px 20px 130px 20px' }}>
       {/* Profile Header Card */}
       <div className="glass-panel" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', marginBottom: '24px', position: 'relative', overflow: 'hidden' }}>
         {/* Absolute Gold decorative lines */}

@@ -71,7 +71,7 @@ const Book = ({ onBookingComplete, setTab }) => {
   };
 
   return (
-    <div className="scroll-container fade-in" style={{ padding: '20px' }}>
+    <div className="scroll-container fade-in" style={{ padding: '20px 20px 130px 20px' }}>
       <h2 style={{ fontSize: '1.6rem', marginBottom: '16px', textAlign: 'left' }}>Запись на маникюр</h2>
 
       {/* Step 1: Select Service */}
