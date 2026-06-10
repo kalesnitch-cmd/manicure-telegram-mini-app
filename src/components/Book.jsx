@@ -71,162 +71,164 @@ const Book = ({ onBookingComplete, setTab }) => {
   };
 
   return (
-    <div className="scroll-container fade-in" style={{ padding: '20px 20px 130px 20px' }}>
-      <h2 style={{ fontSize: '1.6rem', marginBottom: '16px', textAlign: 'left' }}>Запись на маникюр</h2>
+    <>
+      <div className="scroll-container fade-in" style={{ padding: '20px 20px 130px 20px' }}>
+        <h2 style={{ fontSize: '1.6rem', marginBottom: '16px', textAlign: 'left' }}>Запись на маникюр</h2>
 
-      {/* Step 1: Select Service */}
-      <div className="glass-panel" style={{ padding: '16px', marginBottom: '20px' }}>
-        <h3 style={{ fontSize: '1rem', color: 'var(--text-muted)', marginBottom: '12px', textTransform: 'uppercase', letterSpacing: '1px', textAlign: 'left' }}>
-          1. Выберите услугу
-        </h3>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-          {SERVICES.map((s) => (
-            <div 
-              key={s.id}
-              onClick={() => setSelectedService(s)}
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                padding: '12px 16px',
-                borderRadius: 'var(--border-radius-sm)',
-                border: selectedService.id === s.id ? '2px solid var(--rose-dark)' : '1px solid rgba(176,125,98,0.2)',
-                background: selectedService.id === s.id ? 'rgba(252,213,206,0.3)' : 'rgba(255,255,255,0.4)',
-                cursor: 'pointer',
-                transition: 'var(--transition)'
-              }}
-            >
-              <div style={{ textAlign: 'left', flex: 1, paddingRight: '8px' }}>
-                <div style={{ fontWeight: '600', fontSize: '0.9rem', color: 'var(--text-main)' }}>{s.name}</div>
-                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>⏱ {s.duration}</div>
-              </div>
-              <div style={{ fontWeight: '700', color: 'var(--rose-dark)', fontSize: '0.95rem' }}>{s.price}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Step 2: Custom Calendar */}
-      <div className="glass-panel" style={{ padding: '16px', marginBottom: '20px' }}>
-        <h3 style={{ fontSize: '1rem', color: 'var(--text-muted)', marginBottom: '12px', textTransform: 'uppercase', letterSpacing: '1px', textAlign: 'left' }}>
-          2. Выберите дату ({monthName})
-        </h3>
-        
-        {/* Weekday Labels */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '4px', textAlign: 'center', fontWeight: '600', fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '8px' }}>
-          <div>Пн</div><div>Вт</div><div>Ср</div><div>Чт</div><div>Пт</div><div style={{color: 'var(--rose-dark)'}}>Сб</div><div style={{color: 'var(--rose-dark)'}}>Вс</div>
-        </div>
-
-        {/* Days Grid */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '6px' }}>
-          {daysArray.map((day) => {
-            const isToday = day === 10;
-            const isPast = day < 10;
-            const isAvailable = day >= 11; // Future bookings starting from tomorrow June 11
-            const isSelected = selectedDate === day;
-
-            return (
-              <button
-                key={day}
-                onClick={() => handleDaySelect(day)}
-                disabled={!isAvailable}
+        {/* Step 1: Select Service */}
+        <div className="glass-panel" style={{ padding: '16px', marginBottom: '20px' }}>
+          <h3 style={{ fontSize: '1rem', color: 'var(--text-muted)', marginBottom: '12px', textTransform: 'uppercase', letterSpacing: '1px', textAlign: 'left' }}>
+            1. Выберите услугу
+          </h3>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            {SERVICES.map((s) => (
+              <div 
+                key={s.id}
+                onClick={() => setSelectedService(s)}
                 style={{
-                  height: '40px',
-                  borderRadius: '50%',
-                  border: isSelected ? '2px solid var(--rose-dark)' : 'none',
-                  background: isSelected 
-                    ? 'var(--button-gradient)' 
-                    : isToday 
-                    ? 'rgba(212,175,55,0.25)'
-                    : isAvailable 
-                    ? 'rgba(255, 255, 255, 0.6)' 
-                    : 'transparent',
-                  color: isSelected 
-                    ? 'white' 
-                    : isToday 
-                    ? 'var(--text-main)'
-                    : isAvailable 
-                    ? 'var(--text-main)' 
-                    : 'rgba(74, 59, 50, 0.25)',
-                  fontWeight: isSelected || isToday ? '700' : '500',
-                  fontSize: '0.85rem',
-                  cursor: isAvailable ? 'pointer' : 'not-allowed',
-                  position: 'relative',
                   display: 'flex',
-                  justifyContent: 'center',
+                  justifyContent: 'space-between',
                   alignItems: 'center',
+                  padding: '12px 16px',
+                  borderRadius: 'var(--border-radius-sm)',
+                  border: selectedService.id === s.id ? '2px solid var(--rose-dark)' : '1px solid rgba(176,125,98,0.2)',
+                  background: selectedService.id === s.id ? 'rgba(252,213,206,0.3)' : 'rgba(255,255,255,0.4)',
+                  cursor: 'pointer',
                   transition: 'var(--transition)'
                 }}
               >
-                {day}
-                {isToday && !isSelected && (
-                  <span style={{
-                    position: 'absolute',
-                    bottom: '4px',
-                    width: '4px',
-                    height: '4px',
-                    borderRadius: '50%',
-                    background: 'var(--gold-accent)'
-                  }}></span>
-                )}
-              </button>
-            );
-          })}
+                <div style={{ textAlign: 'left', flex: 1, paddingRight: '8px' }}>
+                  <div style={{ fontWeight: '600', fontSize: '0.9rem', color: 'var(--text-main)' }}>{s.name}</div>
+                  <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>⏱ {s.duration}</div>
+                </div>
+                <div style={{ fontWeight: '700', color: 'var(--rose-dark)', fontSize: '0.95rem' }}>{s.price}</div>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
 
-      {/* Step 3: Select Time Slot */}
-      {selectedDate && (
-        <div className="glass-panel fade-in" style={{ padding: '16px', marginBottom: '24px' }}>
+        {/* Step 2: Custom Calendar */}
+        <div className="glass-panel" style={{ padding: '16px', marginBottom: '20px' }}>
           <h3 style={{ fontSize: '1rem', color: 'var(--text-muted)', marginBottom: '12px', textTransform: 'uppercase', letterSpacing: '1px', textAlign: 'left' }}>
-            3. Выберите время
+            2. Выберите дату ({monthName})
           </h3>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px' }}>
-            {TIME_SLOTS.map((slot, index) => {
-              const isSelected = selectedTime === slot.time;
+          
+          {/* Weekday Labels */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '4px', textAlign: 'center', fontWeight: '600', fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '8px' }}>
+            <div>Пн</div><div>Вт</div><div>Ср</div><div>Чт</div><div>Пт</div><div style={{color: 'var(--rose-dark)'}}>Сб</div><div style={{color: 'var(--rose-dark)'}}>Вс</div>
+          </div>
+
+          {/* Days Grid */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '6px' }}>
+            {daysArray.map((day) => {
+              const isToday = day === 10;
+              const isPast = day < 10;
+              const isAvailable = day >= 11; // Future bookings starting from tomorrow June 11
+              const isSelected = selectedDate === day;
+
               return (
                 <button
-                  key={index}
-                  onClick={() => setSelectedTime(slot.time)}
-                  disabled={!slot.available}
+                  key={day}
+                  onClick={() => handleDaySelect(day)}
+                  disabled={!isAvailable}
                   style={{
-                    padding: '12px 6px',
-                    borderRadius: 'var(--border-radius-sm)',
-                    border: isSelected ? '1.5px solid var(--rose-dark)' : '1px solid rgba(176,125,98,0.2)',
+                    height: '40px',
+                    borderRadius: '50%',
+                    border: isSelected ? '2px solid var(--rose-dark)' : 'none',
                     background: isSelected 
-                      ? 'rgba(252,213,206,0.5)' 
-                      : slot.available 
-                      ? 'rgba(255,255,255,0.6)' 
-                      : 'rgba(0,0,0,0.05)',
-                    color: slot.available ? 'var(--text-main)' : 'rgba(74, 59, 50, 0.35)',
-                    fontWeight: isSelected ? '700' : '500',
+                      ? 'var(--button-gradient)' 
+                      : isToday 
+                      ? 'rgba(212,175,55,0.25)'
+                      : isAvailable 
+                      ? 'rgba(255, 255, 255, 0.6)' 
+                      : 'transparent',
+                    color: isSelected 
+                      ? 'white' 
+                      : isToday 
+                      ? 'var(--text-main)'
+                      : isAvailable 
+                      ? 'var(--text-main)' 
+                      : 'rgba(74, 59, 50, 0.25)',
+                    fontWeight: isSelected || isToday ? '700' : '500',
                     fontSize: '0.85rem',
-                    textDecoration: slot.available ? 'none' : 'line-through',
-                    cursor: slot.available ? 'pointer' : 'not-allowed',
+                    cursor: isAvailable ? 'pointer' : 'not-allowed',
+                    position: 'relative',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
                     transition: 'var(--transition)'
                   }}
                 >
-                  {slot.time}
+                  {day}
+                  {isToday && !isSelected && (
+                    <span style={{
+                      position: 'absolute',
+                      bottom: '4px',
+                      width: '4px',
+                      height: '4px',
+                      borderRadius: '50%',
+                      background: 'var(--gold-accent)'
+                    }}></span>
+                  )}
                 </button>
               );
             })}
           </div>
         </div>
-      )}
 
-      {/* Booking Summary & Submit */}
-      {selectedDate && selectedTime && (
-        <div className="fade-in" style={{ marginBottom: '20px' }}>
-          <button onClick={handleBooking} className="btn-primary">
-            Записаться на {selectedDate} июня в {selectedTime} 🌸
-          </button>
-        </div>
-      )}
+        {/* Step 3: Select Time Slot */}
+        {selectedDate && (
+          <div className="glass-panel fade-in" style={{ padding: '16px', marginBottom: '24px' }}>
+            <h3 style={{ fontSize: '1rem', color: 'var(--text-muted)', marginBottom: '12px', textTransform: 'uppercase', letterSpacing: '1px', textAlign: 'left' }}>
+              3. Выберите время
+            </h3>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px' }}>
+              {TIME_SLOTS.map((slot, index) => {
+                const isSelected = selectedTime === slot.time;
+                return (
+                  <button
+                    key={index}
+                    onClick={() => setSelectedTime(slot.time)}
+                    disabled={!slot.available}
+                    style={{
+                      padding: '12px 6px',
+                      borderRadius: 'var(--border-radius-sm)',
+                      border: isSelected ? '1.5px solid var(--rose-dark)' : '1px solid rgba(176,125,98,0.2)',
+                      background: isSelected 
+                        ? 'rgba(252,213,206,0.5)' 
+                        : slot.available 
+                        ? 'rgba(255,255,255,0.6)' 
+                        : 'rgba(0,0,0,0.05)',
+                      color: slot.available ? 'var(--text-main)' : 'rgba(74, 59, 50, 0.35)',
+                      fontWeight: isSelected ? '700' : '500',
+                      fontSize: '0.85rem',
+                      textDecoration: slot.available ? 'none' : 'line-through',
+                      cursor: slot.available ? 'pointer' : 'not-allowed',
+                      transition: 'var(--transition)'
+                    }}
+                  >
+                    {slot.time}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
 
-      {/* Success Popup Modal */}
+        {/* Booking Summary & Submit */}
+        {selectedDate && selectedTime && (
+          <div className="fade-in" style={{ marginBottom: '20px' }}>
+            <button onClick={handleBooking} className="btn-primary">
+              Записаться на {selectedDate} июня в {selectedTime} 🌸
+            </button>
+          </div>
+        )}
+      </div>
+
+      {/* Success Popup Modal - RENDERED OUTSIDE OF SCROLL CONTAINER */}
       {showSuccess && successDetails && (
-        <div className="success-overlay">
-          <div className="success-box">
+        <div className="success-overlay" style={{ position: 'absolute' }}>
+          <div className="success-box" style={{ transform: 'none' }}>
             <span className="success-icon">✨</span>
             <h2 style={{ fontSize: '1.5rem', marginBottom: '12px' }}>Запись подтверждена!</h2>
             <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)', marginBottom: '20px', lineHeight: '1.5' }}>
@@ -245,7 +247,7 @@ const Book = ({ onBookingComplete, setTab }) => {
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 };
 
