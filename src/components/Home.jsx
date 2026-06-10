@@ -1,122 +1,25 @@
-import React from 'react';
 import { ClockIcon, LocationIcon, ShieldCleanIcon, GemIcon, AwardIcon } from './Icons';
 
-const Home = ({ user, setTab }) => {
-  return (
-    <div className="scroll-container fade-in" style={{ padding: '24px 20px 95px 20px' }}>
-      {/* Profile Header Card */}
-      <div className="glass-panel" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', marginBottom: '24px', position: 'relative', overflow: 'hidden' }}>
-        {/* Absolute Gold decorative lines */}
-        <div style={{ position: 'absolute', top: '-20px', right: '-20px', width: '80px', height: '80px', border: '2px solid rgba(212,175,55,0.15)', borderRadius: '50%' }}></div>
-        <div style={{ position: 'absolute', bottom: '-30px', left: '-30px', width: '120px', height: '120px', border: '1px solid rgba(212,175,55,0.1)', borderRadius: '50%' }}></div>
-
-        {/* User Telegram Avatar */}
-        <div style={{ position: 'relative', marginBottom: '16px' }}>
-          <div style={{
-            position: 'absolute',
-            inset: '-4px',
-            background: 'var(--gold-gradient)',
-            borderRadius: '50%',
-            zIndex: 1,
-            boxShadow: '0 4px 15px rgba(212,175,55,0.3)'
-          }}></div>
-          <img 
-            src={user.avatar || 'images/avatar.png'} 
-            alt="Telegram Avatar" 
-            style={{
-              width: '84px',
-              height: '84px',
-              borderRadius: '50%',
-              objectFit: 'cover',
-              position: 'relative',
-              zIndex: 2,
-              border: '3px solid white',
-              display: 'block'
-            }}
-            onError={(e) => { e.target.src = 'images/avatar.png'; }}
-          />
-        </div>
-
-        <h2 style={{ fontSize: '1.8rem', fontWeight: '700', marginBottom: '4px' }}>
-          Привет, {user.name}!
-        </h2>
-        <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', fontWeight: '500' }}>
-          {user.phone}
-        </p>
-      </div>
-
-      {/* Salon Information Card */}
-      <div className="glass-card" style={{ padding: '20px', marginBottom: '20px', borderLeft: '4px solid var(--rose-dark)' }}>
-        <h3 style={{ fontSize: '1.2rem', marginBottom: '8px', textAlign: 'left' }}>Студия Nails & Beauty</h3>
-        <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', textAlign: 'left', lineHeight: '1.4', marginBottom: '12px' }}>
-          Премиальный маникюр и педикюр от топ-мастера Валерии. Творим красоту на ваших руках с любовью и заботой.
-        </p>
-        
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.85rem', color: 'var(--text-main)', textAlign: 'left' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <ClockIcon size={16} />
-            <span>Ежедневно с 10:00 до 22:00</span>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <LocationIcon size={16} />
-            <span>ул. Элегантная, д. 15, офис 302</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Master Profile Info */}
-      <div className="glass-panel" style={{ padding: '20px', textAlign: 'left', borderTop: '4.5px solid var(--gold-accent)' }}>
-        <h3 style={{ fontSize: '1.25rem', marginBottom: '12px', fontFamily: 'var(--font-serif)', display: 'flex', alignItems: 'center', gap: '8px' }}>
-          О мастере Валерии
-        </h3>
-        
-        {/* Experience badges */}
-        <div style={{ display: 'flex', gap: '10px', marginBottom: '16px' }}>
-          <span style={{ fontSize: '0.75rem', fontWeight: '600', color: 'var(--rose-dark)', background: 'var(--rose-light)', padding: '4px 10px', borderRadius: '20px', border: '1px solid rgba(176,125,98,0.2)' }}>
-            Возраст: 24 года
-          </span>
-          <span style={{ fontSize: '0.75rem', fontWeight: '600', color: 'var(--rose-dark)', background: 'var(--rose-light)', padding: '4px 10px', borderRadius: '20px', border: '1px solid rgba(176,125,98,0.2)' }}>
-            Опыт: 5 лет
-          </span>
-        </div>
-
-        <p style={{ fontSize: '0.88rem', color: 'var(--text-main)', lineHeight: '1.5', marginBottom: '16px' }}>
-          Привет, девочки! Меня зовут Валерия, и я ваш сертифицированный мастер ногтевого сервиса. Специализируюсь на чистейшем комбинированном маникюре, идеальном выравнивании ногтевой пластины и прочном тонком покрытии. 
-        </p>
-        
-        <p style={{ fontSize: '0.88rem', color: 'var(--text-main)', lineHeight: '1.5', marginBottom: '20px' }}>
-          Люблю создавать эстетичные минималистичные дизайны, френч и аккуратную геометрию. Постоянно повышаю квалификацию, чтобы ваши ручки выглядели дорого и безупречно!
-        </p>
-
-        {/* Studio quality checklist */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-          <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
-            <div style={{ marginTop: '2px' }}><ShieldCleanIcon size={20} /></div>
-            <div>
-              <div style={{ fontWeight: '700', fontSize: '0.85rem', color: 'var(--text-main)' }}>100% Стерильность</div>
-              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Трехэтапная обработка инструментов по СанПиН (Сухожар ГП-10), крафт-пакет вскрывается при вас.</div>
-            </div>
-          </div>
-
-          <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
-            <div style={{ marginTop: '2px' }}><GemIcon size={20} /></div>
-            <div>
-              <div style={{ fontWeight: '700', fontSize: '0.85rem', color: 'var(--text-main)' }}>Премиум материалы</div>
-              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Работаю исключительно на проверенных качественных базах и пигментах (Luxio, Uno, E.Mi), никакого скола покрытия.</div>
-            </div>
-          </div>
-
-          <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
-            <div style={{ marginTop: '2px' }}><AwardIcon size={20} /></div>
-            <div>
-              <div style={{ fontWeight: '700', fontSize: '0.85rem', color: 'var(--text-main)' }}>Сертифицированный специалист</div>
-              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Выпускница академии EMI School, победительница регионального конкурса Nail Art 2024.</div>
-            </div>
-          </div>
-        </div>
-      </div>
+export default function Home({ data, setTab }) {
+  const { profile, settings, schedule = [] } = data;
+  const working = schedule.filter((d) => d.is_working);
+  const hours = working.length ? `${working[0].start_time.slice(0, 5)}–${working[0].end_time.slice(0, 5)}` : 'по записи';
+  return <div className="scroll-container fade-in page">
+    <div className="glass-panel profile-card">
+      <img className="profile-avatar" src={profile.avatar_url || 'images/avatar.png'} alt="Аватар" onError={(e) => { e.currentTarget.src = 'images/avatar.png'; }} />
+      <h2>Привет, {profile.name}!</h2><p>{profile.phone}</p>
+      {profile.role === 'admin' && <button className="btn-secondary compact" onClick={() => setTab('admin')}>Открыть админку</button>}
     </div>
-  );
-};
-
-export default Home;
+    <div className="glass-card info-card">
+      <h3>{settings.studio_name}</h3><p>{settings.short_description}</p>
+      <div><ClockIcon size={16} /><span>Рабочее время: {hours}</span></div>
+      <div><LocationIcon size={16} /><span>{settings.address}</span></div>
+    </div>
+    <div className="glass-panel about-card">
+      <h3>О мастере {settings.master_name}</h3><p>{settings.about_text}</p>
+      <div className="quality"><ShieldCleanIcon size={20} /><span><b>Стерильность</b><small>Безопасная обработка инструментов и одноразовые материалы.</small></span></div>
+      <div className="quality"><GemIcon size={20} /><span><b>Качественные материалы</b><small>Стойкое покрытие и бережный уход.</small></span></div>
+      <div className="quality"><AwardIcon size={20} /><span><b>Профессиональный подход</b><small>Услуга и время подбираются индивидуально.</small></span></div>
+    </div>
+  </div>;
+}

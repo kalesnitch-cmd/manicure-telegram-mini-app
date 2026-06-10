@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { api } from '../lib/api';
 
-const Register = ({ onRegister }) => {
-  const [name, setName] = useState('');
+const Register = ({ onRegister, telegramUser, telegramRequired }) => {
+  const [name, setName] = useState([telegramUser?.first_name, telegramUser?.last_name].filter(Boolean).join(' '));
   const [phone, setPhone] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
@@ -9,18 +10,12 @@ const Register = ({ onRegister }) => {
   // Format phone number as user types: +7 (999) 999-99-99
   const handlePhoneChange = (e) => {
     const rawVal = e.target.value.replace(/\D/g, '');
-    let formatted = '';
-    
     if (rawVal.length === 0) {
       setPhone('');
       return;
     }
 
-    if (rawVal.startsWith('7') || rawVal.startsWith('8')) {
-      formatted = '+7';
-    } else {
-      formatted = '+7';
-    }
+    let formatted = '+7';
 
     // append rest of the digits
     const digits = rawVal.substring(1, 11);
@@ -40,7 +35,7 @@ const Register = ({ onRegister }) => {
     setPhone(formatted);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!name.trim()) {
       setError('Пожалуйста, введите ваше имя');
@@ -54,11 +49,14 @@ const Register = ({ onRegister }) => {
     setError('');
     setIsSubmitting(true);
     
-    // Simulate API request to backend
-    setTimeout(() => {
+    try {
+      const { profile } = await api('register', { name, phone });
       setIsSubmitting(false);
-      onRegister({ name, phone });
-    }, 1500);
+      onRegister(profile);
+    } catch (err) {
+      setError(err.message);
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -105,7 +103,8 @@ const Register = ({ onRegister }) => {
             </p>
           )}
 
-          <button type="submit" className="btn-primary" disabled={isSubmitting}>
+          {telegramRequired && <p className="form-error">Для регистрации откройте Mini App из Telegram-бота.</p>}
+          <button type="submit" className="btn-primary" disabled={isSubmitting || telegramRequired}>
             {isSubmitting ? (
               <span className="spinner" style={{
                 display: 'inline-block',

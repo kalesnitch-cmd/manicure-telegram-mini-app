@@ -1,199 +1,68 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Loader from './components/Loader';
 import Register from './components/Register';
 import Home from './components/Home';
 import Book from './components/Book';
 import MyBookings from './components/MyBookings';
 import Portfolio from './components/Portfolio';
+import Admin from './components/Admin';
 import { LotusIcon, CalendarIcon, NailIcon, SparklesIcon } from './components/Icons';
+import { api, hasTelegramSession } from './lib/api';
 
-function App() {
+export default function App() {
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState(null);
-  const [tab, setTab] = useState('home'); // 'home', 'book', 'bookings', 'portfolio'
-  const [refreshTrigger, setRefreshTrigger] = useState(0);
+  const [data, setData] = useState(null);
+  const [tab, setTab] = useState('home');
+  const [error, setError] = useState('');
+  const [refresh, setRefresh] = useState(0);
+
+  const load = async () => {
+    try {
+      const result = await api(hasTelegramSession() ? 'bootstrap' : 'public_bootstrap');
+      setData(result);
+      setError('');
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    // Check Telegram WebApp API
     const tg = window.Telegram?.WebApp;
-    if (tg) {
-      tg.ready();
-      tg.expand();
-      
-      // Attempt to extract Telegram User
-      const tgUser = tg.initDataUnsafe?.user;
-      if (tgUser) {
-        // Look up if user has already registered (e.g. we have their phone in LocalStorage)
-        const storedUser = localStorage.getItem(`nails_user_${tgUser.id}`);
-        if (storedUser) {
-          setUser(JSON.parse(storedUser));
-        } else {
-          // Pre-fill user with telegram details but keep user state null so they do registration
-          // to input phone number.
-          window.tgUserPrefill = {
-            id: tgUser.id,
-            name: `${tgUser.first_name || ''} ${tgUser.last_name || ''}`.trim(),
-            avatar: tgUser.photo_url || 'images/avatar.png'
-          };
-        }
-      } else {
-        // Fallback for regular browser testing
-        const storedLocal = localStorage.getItem('nails_user_default');
-        if (storedLocal) {
-          setUser(JSON.parse(storedLocal));
-        }
-      }
-    } else {
-      // Fallback for regular browser testing if tg is not available
-      const storedLocal = localStorage.getItem('nails_user_default');
-      if (storedLocal) {
-        setUser(JSON.parse(storedLocal));
-      }
-    }
+    tg?.ready(); tg?.expand(); tg?.enableClosingConfirmation?.();
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    load();
   }, []);
 
-  const handleRegister = (data) => {
-    const tg = window.Telegram?.WebApp;
-    const tgUser = tg?.initDataUnsafe?.user;
-    
-    const newUser = {
-      id: tgUser?.id || 'default_user',
-      name: data.name,
-      phone: data.phone,
-      avatar: tgUser?.photo_url || 'images/avatar.png' // Use generated avatar if no telegram photo
-    };
-
-    if (tgUser?.id) {
-      localStorage.setItem(`nails_user_${tgUser.id}`, JSON.stringify(newUser));
-    } else {
-      localStorage.setItem('nails_user_default', JSON.stringify(newUser));
-    }
-    
-    setUser(newUser);
+  const registered = (profile) => {
+    setData((current) => ({ ...current, profile }));
     setTab('home');
   };
 
-  const handleBookingComplete = () => {
-    setRefreshTrigger(prev => prev + 1);
-  };
+  if (loading) return <Loader onLoaded={() => {}} />;
+  if (error && !data) return <div className="center-message glass-panel">{error}<button className="btn-primary" onClick={load}>Повторить</button></div>;
+  if (!data?.profile) return <Register onRegister={registered} telegramUser={data?.telegramUser} telegramRequired={!hasTelegramSession()} />;
 
-  // Switch tabs
-  const renderTabContent = () => {
-    switch (tab) {
-      case 'home':
-        return <Home user={user} setTab={setTab} />;
-      case 'book':
-        return <Book onBookingComplete={handleBookingComplete} setTab={setTab} />;
-      case 'bookings':
-        return <MyBookings setTab={setTab} refreshTrigger={refreshTrigger} />;
-      case 'portfolio':
-        return <Portfolio />;
-      default:
-        return <Home user={user} setTab={setTab} />;
-    }
-  };
+  const props = { data, setData, setTab, refresh, setRefresh };
+  const content = tab === 'book' ? <Book {...props} />
+    : tab === 'bookings' ? <MyBookings {...props} />
+    : tab === 'portfolio' ? <Portfolio {...props} />
+    : tab === 'admin' ? <Admin {...props} reload={load} />
+    : <Home {...props} />;
 
-  // Get background image relative path based on state
-  const getBackgroundImage = () => {
-    if (!user) return 'images/bg_register.png';
-    switch (tab) {
-      case 'home':
-        return 'images/bg.png';
-      case 'book':
-        return 'images/bg_book.png';
-      case 'bookings':
-        return 'images/bg_bookings.png';
-      case 'portfolio':
-        return 'images/bg_portfolio.png';
-      default:
-        return 'images/bg.png';
-    }
-  };
+  const nav = [
+    ['home', 'Главная', LotusIcon], ['book', 'Записаться', CalendarIcon],
+    ['bookings', 'Мои записи', NailIcon], ['portfolio', 'Портфолио', SparklesIcon],
+  ];
+  if (data.profile.role === 'admin') nav.push(['admin', 'Админ', CalendarIcon]);
 
-  if (loading) {
-    return <Loader onLoaded={() => setLoading(false)} />;
-  }
-
-  const bgImage = getBackgroundImage();
-
-  // If user is not registered, show Register Screen
-  if (!user) {
-    return (
-      <div 
-        style={{
-          width: '100%',
-          height: '100%',
-          backgroundImage: `linear-gradient(rgba(255, 245, 245, 0.8), rgba(255, 227, 227, 0.85)), url("${bgImage}")`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          display: 'flex',
-          flexDirection: 'column',
-          transition: 'background-image 0.5s ease-in-out'
-        }}
-      >
-        <Register onRegister={handleRegister} />
-      </div>
-    );
-  }
-
-  return (
-    <div 
-      style={{
-        width: '100%',
-        height: '100%',
-        backgroundImage: `linear-gradient(rgba(255, 248, 248, 0.82), rgba(255, 235, 235, 0.88)), url("${bgImage}")`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        display: 'flex',
-        flexDirection: 'column',
-        position: 'relative',
-        transition: 'background-image 0.5s ease-in-out'
-      }}
-    >
-      {/* Scrollable container for tab contents */}
-      {renderTabContent()}
-
-      {/* Sleek Glassmorphic Bottom Navigation */}
-      <nav className="bottom-nav">
-        <button 
-          onClick={() => setTab('home')} 
-          className={`nav-item ${tab === 'home' ? 'active' : ''}`}
-        >
-          <span className="nav-icon">
-            <LotusIcon color={tab === 'home' ? 'var(--rose-dark)' : 'var(--text-muted)'} size={22} />
-          </span>
-          <span>Главная</span>
-        </button>
-        <button 
-          onClick={() => setTab('book')} 
-          className={`nav-item ${tab === 'book' ? 'active' : ''}`}
-        >
-          <span className="nav-icon">
-            <CalendarIcon color={tab === 'book' ? 'var(--rose-dark)' : 'var(--text-muted)'} size={22} />
-          </span>
-          <span>Записаться</span>
-        </button>
-        <button 
-          onClick={() => setTab('bookings')} 
-          className={`nav-item ${tab === 'bookings' ? 'active' : ''}`}
-        >
-          <span className="nav-icon">
-            <NailIcon color={tab === 'bookings' ? 'var(--rose-dark)' : 'var(--text-muted)'} size={22} />
-          </span>
-          <span>Мои записи</span>
-        </button>
-        <button 
-          onClick={() => setTab('portfolio')} 
-          className={`nav-item ${tab === 'portfolio' ? 'active' : ''}`}
-        >
-          <span className="nav-icon">
-            <SparklesIcon color={tab === 'portfolio' ? 'var(--rose-dark)' : 'var(--text-muted)'} size={22} />
-          </span>
-          <span>Портфолио</span>
-        </button>
-      </nav>
-    </div>
-  );
+  return <div className="app-shell">
+    {content}
+    <nav className="bottom-nav">
+      {nav.map(([id, label, Icon]) => <button key={id} onClick={() => setTab(id)} className={`nav-item ${tab === id ? 'active' : ''}`}>
+        <span className="nav-icon"><Icon color={tab === id ? 'var(--rose-dark)' : 'var(--text-muted)'} size={21} /></span><span>{label}</span>
+      </button>)}
+    </nav>
+  </div>;
 }
-
-export default App;

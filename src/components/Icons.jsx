@@ -1,4 +1,3 @@
-import React from 'react';
 
 // Custom design icons in rose-dark or currentColor to give a high-end salon feel
 
