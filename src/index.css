@@ -1,0 +1,393 @@
+/* Custom Variables - Luxury Blush & Gold Theme */
+:root {
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-sans: 'Montserrat', system-ui, sans-serif;
+  
+  /* Colors */
+  --rose-light: #fff0f3;
+  --rose-mid: #fcd5ce;
+  --rose-deep: #ecbfa6;
+  --rose-dark: #b07d62;
+  --blush-bg: #fff8f8;
+  --gold-accent: #d4af37;
+  --gold-light: #f3e5ab;
+  --gold-gradient: linear-gradient(135deg, #d4af37 0%, #f3e5ab 50%, #aa7c11 100%);
+  --rose-gradient: linear-gradient(135deg, #ffcad4 0%, #fcd5ce 100%);
+  --button-gradient: linear-gradient(135deg, #b07d62 0%, #8f5d43 100%);
+  --bg-gradient: linear-gradient(180deg, #fff5f5 0%, #ffe3e3 100%);
+  
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.4);
+  --glass-shadow: 0 8px 32px 0 rgba(176, 125, 98, 0.15);
+  
+  --text-main: #4a3b32;
+  --text-muted: #8c7365;
+  --text-white: #ffffff;
+  --danger: #e63946;
+  --success: #2a9d8f;
+
+  /* Sizes */
+  --border-radius: 20px;
+  --border-radius-sm: 12px;
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Base resets and styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: #121212; /* Dark outer background for desktop mode */
+  color: var(--text-main);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* Telegram App Wrapper - fits mobile, looks like phone on desktop */
+#root {
+  width: 100%;
+  max-width: 480px;
+  height: 100vh;
+  height: 100dvh;
+  background: var(--bg-gradient);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  border-radius: 0;
+}
+
+@media (min-width: 481px) {
+  #root {
+    height: 850px;
+    border-radius: 36px;
+    border: 8px solid #222;
+  }
+}
+
+/* Typography */
+h1, h2, h3, .font-serif {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+p, span, input, button {
+  font-family: var(--font-sans);
+}
+
+/* Scrollbar styles */
+.scroll-container {
+  overflow-y: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* IE and Edge */
+  flex: 1;
+  padding-bottom: 90px; /* space for tab bar */
+}
+
+.scroll-container::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+/* Loading Glassmorphic Screen */
+.loader-screen {
+  position: absolute;
+  inset: 0;
+  background: var(--bg-gradient);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  transition: opacity 0.5s ease;
+}
+
+.loader-logo-container {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.loader-logo {
+  font-family: var(--font-serif);
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: var(--text-main);
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.05);
+  position: relative;
+  z-index: 2;
+}
+
+.loader-logo-bg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100px;
+  height: 100px;
+  background: var(--rose-mid);
+  border-radius: 50%;
+  filter: blur(20px);
+  opacity: 0.6;
+  animation: pulse 2s infinite alternate;
+}
+
+.loader-progress-track {
+  width: 150px;
+  height: 4px;
+  background: rgba(176, 125, 98, 0.2);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-top: 15px;
+}
+
+.loader-progress-bar {
+  height: 100%;
+  width: 0%;
+  background: var(--button-gradient);
+  border-radius: 2px;
+  animation: fillProgress 2.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.loader-text {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-top: 10px;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Glassmorphism Styles */
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--border-radius);
+  box-shadow: var(--glass-shadow);
+  padding: 24px;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: var(--border-radius-sm);
+  padding: 16px;
+  margin-bottom: 16px;
+  transition: var(--transition);
+}
+
+.glass-card:active {
+  transform: scale(0.98);
+}
+
+/* Inputs & Form Fields */
+.input-group {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.input-label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+  padding-left: 4px;
+}
+
+.input-field {
+  width: 100%;
+  padding: 14px 18px;
+  border-radius: var(--border-radius-sm);
+  border: 1.5px solid rgba(176, 125, 98, 0.25);
+  background: rgba(255, 255, 255, 0.6);
+  font-size: 1rem;
+  color: var(--text-main);
+  outline: none;
+  transition: var(--transition);
+}
+
+.input-field:focus {
+  border-color: var(--rose-dark);
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0 10px rgba(176, 125, 98, 0.15);
+}
+
+/* Buttons */
+.btn-primary {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: var(--border-radius-sm);
+  background: var(--button-gradient);
+  color: var(--text-white);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(143, 93, 67, 0.3);
+  transition: var(--transition);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-primary:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 8px rgba(143, 93, 67, 0.2);
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  padding: 10px 16px;
+  border: 1px solid var(--rose-dark);
+  border-radius: var(--border-radius-sm);
+  background: transparent;
+  color: var(--rose-dark);
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-secondary:active {
+  background: rgba(176, 125, 98, 0.1);
+}
+
+/* Nav Bar at the Bottom */
+.bottom-nav {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 72px;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(255, 255, 255, 0.4);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0 12px 10px 12px;
+  z-index: 100;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 0.7rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+  position: relative;
+  flex: 1;
+  padding-top: 8px;
+}
+
+.nav-item.active {
+  color: var(--rose-dark);
+  font-weight: 700;
+}
+
+.nav-icon {
+  font-size: 1.4rem;
+  margin-bottom: 4px;
+  transition: var(--transition);
+}
+
+.nav-item.active .nav-icon {
+  transform: translateY(-2px);
+}
+
+.nav-item.active::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  width: 16px;
+  height: 3px;
+  border-radius: 1.5px;
+  background: var(--rose-dark);
+}
+
+/* Animations */
+@keyframes pulse {
+  0% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.5; }
+  100% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.8; }
+}
+
+@keyframes fillProgress {
+  0% { width: 0%; }
+  100% { width: 100%; }
+}
+
+@keyframes shimmer {
+  0% { opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { opacity: 0.6; }
+}
+
+.fade-in {
+  animation: fadeIn 0.4s ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Success Overlay */
+.success-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 24px;
+}
+
+.success-box {
+  background: white;
+  border-radius: var(--border-radius);
+  padding: 30px 24px;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+  max-width: 380px;
+  width: 100%;
+}
+
+.success-icon {
+  font-size: 3.5rem;
+  margin-bottom: 16px;
+  display: inline-block;
+  animation: pop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes pop {
+  0% { transform: scale(0.5); }
+  100% { transform: scale(1); }
+}
