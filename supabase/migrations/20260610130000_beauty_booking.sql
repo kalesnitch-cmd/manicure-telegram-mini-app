@@ -11,9 +11,6 @@ create table if not exists public.beauty_profiles (
   updated_at timestamptz not null default now()
 );
 
-create unique index if not exists beauty_single_admin
-  on public.beauty_profiles ((role)) where role = 'admin';
-
 create table if not exists public.beauty_services (
   id uuid primary key default gen_random_uuid(),
   name text not null,
