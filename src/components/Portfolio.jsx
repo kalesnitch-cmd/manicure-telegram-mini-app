@@ -1,6 +1,22 @@
 import { useState } from 'react';
 
-const fallback = Array.from({ length: 8 }, (_, i) => ({ id: i + 1, title: 'Работа мастера', description: '', image_url: `images/portfolio/${i + 1}.png` }));
+const fallbackTitles = [
+  "Комби-маникюр & нюдовый тон",
+  "Классический красный гель-лак",
+  "Стильный френч с дизайном",
+  "Матовый маникюр & минимализм",
+  "Ламинирование ресниц & лифтинг",
+  "Архитектура и окрашивание бровей",
+  "Маникюр & нежный градиент",
+  "Долговременная укладка бровей"
+];
+
+const fallback = Array.from({ length: 8 }, (_, i) => ({
+  id: i + 1,
+  title: fallbackTitles[i] || 'Работа мастера',
+  description: 'Аккуратное покрытие премиальными материалами для идеального завершения образа ✨',
+  image_url: `images/portfolio/${i + 1}.png`
+}));
 
 export default function Portfolio({ data }) {
   const [active, setActive] = useState(null);
