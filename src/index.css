@@ -1171,8 +1171,103 @@ p, span, input, button, select, textarea {
   .bottom-nav {
     padding-inline: 8px;
   }
-  
-  .date-grid button {
-    flex: 0 0 62px;
-  }
+}
+
+/* Booking CTA Floating Container */
+.booking-cta-container {
+  position: absolute;
+  bottom: 76px;
+  left: 0;
+  right: 0;
+  padding: 16px 20px;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid var(--border);
+  z-index: 105;
+  box-shadow: 0 -8px 24px rgba(31, 42, 39, 0.04);
+}
+
+.scroll-container.has-cta {
+  padding-bottom: 200px !important;
+}
+
+/* Calendar Grid Styles */
+.calendar-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-top: 4px;
+}
+
+.calendar-month {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.calendar-month-title {
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 4px;
+  text-transform: capitalize;
+}
+
+.calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border);
+}
+
+.calendar-days-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  text-align: center;
+}
+
+.calendar-day-spacer {
+  aspect-ratio: 1;
+}
+
+.calendar-day-btn {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-main);
+  font-size: 0.88rem;
+  font-weight: 700;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.calendar-day-btn:hover:not(:disabled) {
+  background: var(--soft-mint);
+  color: var(--deep-mint);
+}
+
+.calendar-day-btn.selected {
+  background: var(--deep-mint) !important;
+  color: var(--text-white) !important;
+  font-weight: 800;
+  box-shadow: 0 4px 10px rgba(47, 143, 120, 0.25);
+}
+
+.calendar-day-btn:disabled {
+  color: rgba(31, 42, 39, 0.25);
+  cursor: not-allowed;
+}
+
+.calendar-day-btn.past {
+  opacity: 0.25;
 }

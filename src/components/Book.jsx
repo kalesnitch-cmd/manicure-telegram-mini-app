@@ -49,6 +49,48 @@ export default function Book({ data, setTab, setRefresh }) {
 
   const selectedDay = days.find((day) => day.key === selectedDate);
   const slots = slotsFor(selectedDay);
+
+  const calendarMonths = useMemo(() => {
+    const uniqueMonths = [];
+    days.forEach((d) => {
+      const y = d.date.getFullYear();
+      const m = d.date.getMonth();
+      if (!uniqueMonths.some((item) => item.year === y && item.month === m)) {
+        uniqueMonths.push({ year: y, month: m });
+      }
+    });
+
+    return uniqueMonths.map(({ year, month }) => {
+      const title = new Intl.DateTimeFormat('ru-RU', { month: 'long', year: 'numeric' }).format(new Date(year, month, 1));
+      const capitalizedTitle = title.charAt(0).toUpperCase() + title.slice(1);
+
+      const firstDayDate = new Date(year, month, 1);
+      const firstDayWeekday = firstDayDate.getDay();
+      const leadingSpacers = firstDayWeekday === 0 ? 6 : firstDayWeekday - 1;
+
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+      const monthDays = [];
+      for (let d = 1; d <= daysInMonth; d += 1) {
+        const dateObj = new Date(year, month, d);
+        const key = dateKey(dateObj);
+        const dayData = days.find((item) => item.key === key);
+        monthDays.push({
+          dayNumber: d,
+          key,
+          dateObj,
+          dayData,
+        });
+      }
+
+      return {
+        title: capitalizedTitle,
+        leadingSpacers,
+        monthDays,
+      };
+    });
+  }, [days]);
+
   const book = async () => {
     setBusy(true); setError('');
     try {
@@ -61,12 +103,44 @@ export default function Book({ data, setTab, setRefresh }) {
     <section className="glass-panel booking-section"><h3>1. Выберите услугу</h3>{services.map((item) => <button className={`service-row ${serviceId === item.id ? 'selected' : ''}`} key={item.id} onClick={() => { setServiceId(item.id); setSelectedDate(''); setSelectedTime(''); }}>
       <span><b>{item.name}</b><small><ClockIcon size={12} /> {item.duration_minutes} мин</small></span><strong>{money(item.price)}</strong>
     </button>)}</section>
-    <section className="glass-panel booking-section"><h3>2. Выберите дату</h3><div className="date-grid">{days.map((day) => {
-      const available = slotsFor(day).some((slot) => slot.available);
-      return <button key={day.key} disabled={!available} className={selectedDate === day.key ? 'selected' : ''} onClick={() => { setSelectedDate(day.key); setSelectedTime(''); }}>
-        <small>{new Intl.DateTimeFormat('ru-RU', { weekday: 'short' }).format(day.date)}</small><b>{day.date.getDate()}</b><span>{new Intl.DateTimeFormat('ru-RU', { month: 'short' }).format(day.date)}</span>
-      </button>;
-    })}</div></section>
+    <section className="glass-panel booking-section">
+      <h3>2. Выберите дату</h3>
+      <div className="calendar-container">
+        {calendarMonths.map((m) => (
+          <div key={m.title} className="calendar-month">
+            <h4 className="calendar-month-title">{m.title}</h4>
+            <div className="calendar-weekdays">
+              <span>Пн</span><span>Вт</span><span>Ср</span><span>Чт</span><span>Пт</span><span>Сб</span><span>Вс</span>
+            </div>
+            <div className="calendar-days-grid">
+              {Array.from({ length: m.leadingSpacers }).map((_, idx) => (
+                <div key={`spacer-${idx}`} className="calendar-day-spacer"></div>
+              ))}
+              {m.monthDays.map((day) => {
+                const isTodayOrFuture = day.dayData !== undefined;
+                const available = isTodayOrFuture && slotsFor(day.dayData).some((slot) => slot.available);
+                const isSelected = selectedDate === day.key;
+
+                return (
+                  <button
+                    key={day.key}
+                    type="button"
+                    disabled={!available}
+                    className={`calendar-day-btn ${isSelected ? 'selected' : ''} ${!isTodayOrFuture ? 'past' : ''}`}
+                    onClick={() => {
+                      setSelectedDate(day.key);
+                      setSelectedTime('');
+                    }}
+                  >
+                    {day.dayNumber}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
     {selectedDate && <section className="glass-panel booking-section"><h3>3. Выберите время</h3><div className="time-grid">{slots.map((slot) => <button key={slot.time} disabled={!slot.available} className={selectedTime === slot.time ? 'selected' : ''} onClick={() => setSelectedTime(slot.time)}>{slot.time}</button>)}</div></section>}
     {error && <p className="form-error">{error}</p>}
   </div>
