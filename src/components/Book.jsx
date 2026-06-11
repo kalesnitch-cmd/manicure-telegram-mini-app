@@ -12,6 +12,7 @@ export default function Book({ data, setTab, setRefresh }) {
   const [serviceId, setServiceId] = useState(services[0]?.id || '');
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedTime, setSelectedTime] = useState('');
+  const [currentMonthIdx, setCurrentMonthIdx] = useState(0);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(null);
@@ -91,6 +92,13 @@ export default function Book({ data, setTab, setRefresh }) {
     });
   }, [days]);
 
+  const formatSelectedDateShort = (dateStr) => {
+    if (!dateStr) return '';
+    const [year, month, day] = dateStr.split('-').map(Number);
+    const dateObj = new Date(year, month - 1, day);
+    return new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long' }).format(dateObj);
+  };
+
   const book = async () => {
     setBusy(true); setError('');
     try {
@@ -99,6 +107,8 @@ export default function Book({ data, setTab, setRefresh }) {
     } catch (err) { setError(err.message); } finally { setBusy(false); }
   };
 
+  const activeMonth = calendarMonths[currentMonthIdx] || calendarMonths[0];
+
   return <><div className={`scroll-container fade-in page ${selectedTime ? 'has-cta' : ''}`}><h2>Записаться</h2>
     <section className="glass-panel booking-section"><h3>1. Выберите услугу</h3>{services.map((item) => <button className={`service-row ${serviceId === item.id ? 'selected' : ''}`} key={item.id} onClick={() => { setServiceId(item.id); setSelectedDate(''); setSelectedTime(''); }}>
       <span><b>{item.name}</b><small><ClockIcon size={12} /> {item.duration_minutes} мин</small></span><strong>{money(item.price)}</strong>
@@ -106,17 +116,35 @@ export default function Book({ data, setTab, setRefresh }) {
     <section className="glass-panel booking-section">
       <h3>2. Выберите дату</h3>
       <div className="calendar-container">
-        {calendarMonths.map((m) => (
-          <div key={m.title} className="calendar-month">
-            <h4 className="calendar-month-title">{m.title}</h4>
+        {activeMonth && (
+          <div className="calendar-month">
+            <div className="calendar-month-header">
+              <button
+                type="button"
+                className="calendar-nav-btn"
+                disabled={currentMonthIdx === 0}
+                onClick={() => setCurrentMonthIdx((prev) => Math.max(0, prev - 1))}
+              >
+                &larr;
+              </button>
+              <h4 className="calendar-month-title">{activeMonth.title}</h4>
+              <button
+                type="button"
+                className="calendar-nav-btn"
+                disabled={currentMonthIdx === calendarMonths.length - 1}
+                onClick={() => setCurrentMonthIdx((prev) => Math.min(calendarMonths.length - 1, prev + 1))}
+              >
+                &rarr;
+              </button>
+            </div>
             <div className="calendar-weekdays">
               <span>Пн</span><span>Вт</span><span>Ср</span><span>Чт</span><span>Пт</span><span>Сб</span><span>Вс</span>
             </div>
             <div className="calendar-days-grid">
-              {Array.from({ length: m.leadingSpacers }).map((_, idx) => (
+              {Array.from({ length: activeMonth.leadingSpacers }).map((_, idx) => (
                 <div key={`spacer-${idx}`} className="calendar-day-spacer"></div>
               ))}
-              {m.monthDays.map((day) => {
+              {activeMonth.monthDays.map((day) => {
                 const isTodayOrFuture = day.dayData !== undefined;
                 const available = isTodayOrFuture && slotsFor(day.dayData).some((slot) => slot.available);
                 const isSelected = selectedDate === day.key;
@@ -138,7 +166,7 @@ export default function Book({ data, setTab, setRefresh }) {
               })}
             </div>
           </div>
-        ))}
+        )}
       </div>
     </section>
     {selectedDate && <section className="glass-panel booking-section"><h3>3. Выберите время</h3><div className="time-grid">{slots.map((slot) => <button key={slot.time} disabled={!slot.available} className={selectedTime === slot.time ? 'selected' : ''} onClick={() => setSelectedTime(slot.time)}>{slot.time}</button>)}</div></section>}
@@ -147,7 +175,7 @@ export default function Book({ data, setTab, setRefresh }) {
   {selectedTime && (
     <div className="booking-cta-container">
       <button className="btn-primary" disabled={busy} onClick={book}>
-        {busy ? 'Сохраняем…' : `Записаться на ${selectedTime}`}
+        {busy ? 'Сохраняем…' : `Записаться ${formatSelectedDateShort(selectedDate)} в ${selectedTime}`}
       </button>
     </div>
   )}

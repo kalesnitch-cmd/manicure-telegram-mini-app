@@ -1206,12 +1206,46 @@ p, span, input, button, select, textarea {
   gap: 8px;
 }
 
+.calendar-month-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  padding: 0 4px;
+}
+
 .calendar-month-title {
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   font-weight: 800;
   color: var(--text-main);
-  margin-bottom: 4px;
   text-transform: capitalize;
+}
+
+.calendar-nav-btn {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-main);
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.calendar-nav-btn:hover:not(:disabled) {
+  background: var(--soft-mint);
+  border-color: var(--mint);
+  color: var(--deep-mint);
+}
+
+.calendar-nav-btn:disabled {
+  opacity: 0.25;
+  cursor: not-allowed;
 }
 
 .calendar-weekdays {
