@@ -62,8 +62,8 @@ const Register = ({ onRegister, telegramUser, telegramRequired }) => {
   return (
     <div className="scroll-container fade-in" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', height: '100%', padding: '24px' }}>
       <div className="glass-panel" style={{ textAlign: 'center' }}>
-        <h1 style={{ fontSize: '2.2rem', marginBottom: '8px', color: 'var(--text-main)' }}>Привет!</h1>
-        <p style={{ color: 'var(--text-muted)', marginBottom: '32px', fontSize: '1.05rem', fontWeight: '500' }}>
+        <h1 style={{ fontSize: '1.6rem', marginBottom: '8px', color: 'var(--text-main)' }}>Привет!</h1>
+        <p style={{ color: 'var(--text-muted)', marginBottom: '32px', fontSize: '0.9rem', fontWeight: '500' }}>
           давай знакомиться ✨
         </p>
 

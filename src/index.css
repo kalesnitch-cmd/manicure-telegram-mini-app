@@ -12,7 +12,7 @@
   --graphite: #1F2A27;
   
   --text-main: #1F2A27;
-  --text-muted: #6A7772;
+  --text-muted: #4D5C58;
   --text-white: #FFFFFF;
   
   --cta: #2F8F78;
@@ -112,17 +112,17 @@ p, span, input, button, select, textarea {
 }
 
 .page > h2 {
-  font-size: 1.8rem;
+  font-size: 1.45rem;
   font-weight: 800;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
   color: var(--text-main);
 }
 
 .subtitle {
   color: var(--text-muted);
-  margin: -8px 0 24px;
-  font-size: 0.95rem;
-  font-weight: 400;
+  margin: -8px 0 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
 }
 
 /* Loader Screen */
@@ -324,47 +324,34 @@ p, span, input, button, select, textarea {
   align-items: center;
   background: none;
   border: none;
-  color: var(--text-muted);
-  font-size: 0.75rem;
+  color: #7E8F8A;
+  font-size: 0.72rem;
   font-weight: 600;
   cursor: pointer;
   transition: var(--transition);
   position: relative;
   flex: 1;
-  padding-top: 8px;
   gap: 4px;
 }
 
 .nav-item.active {
   color: var(--deep-mint);
+  font-weight: 800;
 }
 
 .nav-icon {
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 6px 16px;
+  border-radius: 16px;
+  background: transparent;
   transition: var(--transition);
 }
 
 .nav-item.active .nav-icon {
+  background: var(--soft-mint);
   transform: translateY(-2px);
-}
-
-.nav-item::after {
-  content: '';
-  position: absolute;
-  bottom: -6px;
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: var(--deep-mint);
-  opacity: 0;
-  transition: var(--transition);
-}
-
-.nav-item.active::after {
-  opacity: 1;
-  transform: scale(1.5);
 }
 
 /* Animations */
@@ -458,7 +445,12 @@ p, span, input, button, select, textarea {
 .app-shell {
   width: 100%;
   height: 100%;
-  background: var(--bg-app);
+  background-color: var(--bg-app);
+  background-image: 
+    radial-gradient(circle at 15% 15%, rgba(221, 244, 235, 0.45) 0%, transparent 45%),
+    radial-gradient(circle at 85% 45%, rgba(167, 232, 208, 0.28) 0%, transparent 45%),
+    radial-gradient(circle at 25% 75%, rgba(255, 248, 237, 0.65) 0%, transparent 50%),
+    radial-gradient(circle at 75% 85%, rgba(221, 244, 235, 0.45) 0%, transparent 40%);
   position: relative;
   display: flex;
   flex-direction: column;
@@ -509,7 +501,7 @@ p, span, input, button, select, textarea {
 }
 
 .profile-card h2 {
-  font-size: 1.6rem;
+  font-size: 1.35rem;
   font-weight: 800;
   color: var(--text-main);
   margin-bottom: 4px;
@@ -529,9 +521,9 @@ p, span, input, button, select, textarea {
 }
 
 .info-card h3 {
-  font-size: 1.35rem;
+  font-size: 1.15rem;
   font-weight: 800;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   color: var(--text-main);
 }
 
@@ -562,9 +554,9 @@ p, span, input, button, select, textarea {
 }
 
 .about-card h3 {
-  font-size: 1.35rem;
+  font-size: 1.15rem;
   font-weight: 800;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   color: var(--text-main);
 }
 
@@ -664,7 +656,7 @@ p, span, input, button, select, textarea {
 }
 
 .service-row b {
-  font-size: 1.05rem;
+  font-size: 0.95rem;
   font-weight: 700;
 }
 
@@ -683,7 +675,7 @@ p, span, input, button, select, textarea {
 
 .service-row strong {
   color: var(--deep-mint);
-  font-size: 1.15rem;
+  font-size: 1.05rem;
   font-weight: 800;
   white-space: nowrap;
 }
@@ -741,7 +733,7 @@ p, span, input, button, select, textarea {
 }
 
 .date-grid b {
-  font-size: 1.25rem;
+  font-size: 1.1rem;
   font-weight: 800;
 }
 
@@ -822,14 +814,14 @@ p, span, input, button, select, textarea {
 }
 
 .booking-card b {
-  font-size: 1.1rem;
+  font-size: 0.95rem;
   font-weight: 700;
   color: var(--text-main);
 }
 
 .booking-card strong {
   color: var(--deep-mint);
-  font-size: 1.15rem;
+  font-size: 1.05rem;
   font-weight: 800;
 }
 
@@ -1142,7 +1134,7 @@ p, span, input, button, select, textarea {
 
 .admin-booking div b,
 .service-admin b {
-  font-size: 1.1rem;
+  font-size: 0.95rem;
   font-weight: 700;
   color: var(--text-main);
 }

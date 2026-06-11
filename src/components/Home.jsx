@@ -16,7 +16,7 @@ export default function Home({ data, setTab }) {
       <div><LocationIcon size={16} /><span>{settings.address}</span></div>
     </div>
     <div className="glass-panel about-card">
-      <h3>О мастере {settings.master_name}</h3><p>{settings.about_text}</p>
+      <h3>О мастере</h3><p>{settings.about_text}</p>
       <div className="quality"><ShieldCleanIcon size={20} /><span><b>Стерильность</b><small>Безопасная обработка инструментов и одноразовые материалы.</small></span></div>
       <div className="quality"><GemIcon size={20} /><span><b>Качественные материалы</b><small>Стойкое покрытие и бережный уход.</small></span></div>
       <div className="quality"><AwardIcon size={20} /><span><b>Профессиональный подход</b><small>Услуга и время подбираются индивидуально.</small></span></div>
