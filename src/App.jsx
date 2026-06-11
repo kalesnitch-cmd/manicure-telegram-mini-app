@@ -61,7 +61,7 @@ export default function App() {
     {content}
     <nav className="bottom-nav">
       {nav.map(([id, label, Icon]) => <button key={id} onClick={() => setTab(id)} className={`nav-item ${tab === id ? 'active' : ''}`}>
-        <span className="nav-icon"><Icon color={tab === id ? 'var(--rose-dark)' : 'var(--text-muted)'} size={21} /></span><span>{label}</span>
+        <span className="nav-icon"><Icon color={tab === id ? 'var(--deep-mint)' : 'var(--text-muted)'} size={21} /></span><span>{label}</span>
       </button>)}
     </nav>
   </div>;

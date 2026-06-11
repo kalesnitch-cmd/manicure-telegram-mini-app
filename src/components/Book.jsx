@@ -57,7 +57,7 @@ export default function Book({ data, setTab, setRefresh }) {
     } catch (err) { setError(err.message); } finally { setBusy(false); }
   };
 
-  return <><div className="scroll-container fade-in page"><h2>Записаться</h2>
+  return <><div className={`scroll-container fade-in page ${selectedTime ? 'has-cta' : ''}`}><h2>Записаться</h2>
     <section className="glass-panel booking-section"><h3>1. Выберите услугу</h3>{services.map((item) => <button className={`service-row ${serviceId === item.id ? 'selected' : ''}`} key={item.id} onClick={() => { setServiceId(item.id); setSelectedDate(''); setSelectedTime(''); }}>
       <span><b>{item.name}</b><small><ClockIcon size={12} /> {item.duration_minutes} мин</small></span><strong>{money(item.price)}</strong>
     </button>)}</section>
@@ -69,8 +69,14 @@ export default function Book({ data, setTab, setRefresh }) {
     })}</div></section>
     {selectedDate && <section className="glass-panel booking-section"><h3>3. Выберите время</h3><div className="time-grid">{slots.map((slot) => <button key={slot.time} disabled={!slot.available} className={selectedTime === slot.time ? 'selected' : ''} onClick={() => setSelectedTime(slot.time)}>{slot.time}</button>)}</div></section>}
     {error && <p className="form-error">{error}</p>}
-    {selectedTime && <button className="btn-primary" disabled={busy} onClick={book}>{busy ? 'Сохраняем…' : `Записаться на ${selectedTime}`}</button>}
   </div>
+  {selectedTime && (
+    <div className="booking-cta-container">
+      <button className="btn-primary" disabled={busy} onClick={book}>
+        {busy ? 'Сохраняем…' : `Записаться на ${selectedTime}`}
+      </button>
+    </div>
+  )}
   {success && <div className="success-overlay"><div className="success-box"><CheckCircleIcon size={52} /><h2>Запись подтверждена!</h2><p>{service?.name}<br/><b>{new Intl.DateTimeFormat('ru-RU', { dateStyle: 'long', timeZone: 'Europe/Moscow' }).format(new Date(success.starts_at))} в {selectedTime}</b></p><div className="location-line"><LocationIcon size={16}/>{data.settings.address}</div><button className="btn-primary" onClick={() => setTab('bookings')}>Мои записи</button></div></div>}
   </>;
 }

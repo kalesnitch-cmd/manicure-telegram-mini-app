@@ -1,7 +1,7 @@
 
-// Custom design icons in rose-dark or currentColor to give a high-end salon feel
+// Custom design icons in deep-mint or currentColor to give a high-end salon feel
 
-export const LotusIcon = ({ size = 20, color = 'var(--rose-dark)' }) => (
+export const LotusIcon = ({ size = 20, color = 'var(--deep-mint)' }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
     <path d="M12 22C12 22 16 18 16 14C16 11.7909 14.2091 10 12 10C9.79086 10 8 11.7909 8 14C8 18 12 22 12 22Z" />
     <path d="M12 2C12 2 16 6 16 10C16 12.2091 14.2091 14 12 14C9.79086 14 8 12.2091 8 10C8 6 12 2 12 2Z" opacity="0.6" />
@@ -10,7 +10,7 @@ export const LotusIcon = ({ size = 20, color = 'var(--rose-dark)' }) => (
   </svg>
 );
 
-export const CalendarIcon = ({ size = 20, color = 'var(--rose-dark)' }) => (
+export const CalendarIcon = ({ size = 20, color = 'var(--deep-mint)' }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
     <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
     <line x1="16" y1="2" x2="16" y2="6" />
@@ -19,7 +19,7 @@ export const CalendarIcon = ({ size = 20, color = 'var(--rose-dark)' }) => (
   </svg>
 );
 
-export const NailIcon = ({ size = 20, color = 'var(--rose-dark)' }) => (
+export const NailIcon = ({ size = 20, color = 'var(--deep-mint)' }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
     {/* Polish Bottle representation */}
     <path d="M10 2h4v5h-4z" />
@@ -28,35 +28,35 @@ export const NailIcon = ({ size = 20, color = 'var(--rose-dark)' }) => (
   </svg>
 );
 
-export const SparklesIcon = ({ size = 20, color = 'var(--rose-dark)' }) => (
+export const SparklesIcon = ({ size = 20, color = 'var(--deep-mint)' }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
     <path d="M12 3l1.5 5.5L19 10l-5.5 1.5L12 17l-1.5-5.5L5 10l5.5-1.5z" />
     <path d="M5 3l.8 2.2L8 6l-2.2.8L5 9l-.8-2.2L2 6l2.2-.8z" opacity="0.7" />
   </svg>
 );
 
-export const ClockIcon = ({ size = 16, color = 'var(--rose-dark)' }) => (
+export const ClockIcon = ({ size = 16, color = 'var(--deep-mint)' }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
     <circle cx="12" cy="12" r="10" />
     <polyline points="12 6 12 12 16 14" />
   </svg>
 );
 
-export const LocationIcon = ({ size = 16, color = 'var(--rose-dark)' }) => (
+export const LocationIcon = ({ size = 16, color = 'var(--deep-mint)' }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
     <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
     <circle cx="12" cy="10" r="3" />
   </svg>
 );
 
-export const ShieldCleanIcon = ({ size = 20, color = 'var(--rose-dark)' }) => (
+export const ShieldCleanIcon = ({ size = 20, color = 'var(--deep-mint)' }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
     <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
     <path d="m9 11 2 2 4-4" />
   </svg>
 );
 
-export const GemIcon = ({ size = 20, color = 'var(--rose-dark)' }) => (
+export const GemIcon = ({ size = 20, color = 'var(--deep-mint)' }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
     <path d="M6 3h12l4 6-10 13L2 9z" />
     <path d="M11 3 8 9l4 13 4-13-3-6" />
@@ -64,7 +64,7 @@ export const GemIcon = ({ size = 20, color = 'var(--rose-dark)' }) => (
   </svg>
 );
 
-export const AwardIcon = ({ size = 20, color = 'var(--rose-dark)' }) => (
+export const AwardIcon = ({ size = 20, color = 'var(--deep-mint)' }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
     <circle cx="12" cy="8" r="7" />
     <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />

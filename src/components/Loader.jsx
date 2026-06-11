@@ -25,7 +25,7 @@ const Loader = ({ onLoaded }) => {
         <div className="loader-logo-bg"></div>
         <div className="loader-logo">Nails</div>
       </div>
-      <div style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontSize: '1.2rem', color: 'var(--text-muted)', marginBottom: '30px' }}>
+      <div style={{ fontFamily: 'var(--font-sans)', fontWeight: '600', letterSpacing: '2px', fontSize: '1.1rem', color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '30px' }}>
         & Beauty
       </div>
       <div className="loader-progress-track">
