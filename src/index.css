@@ -1,11 +1,11 @@
 /* Design System - Pastel Dream & Ultra Glassmorphism */
 :root {
-  --font-family: 'Outfit', 'Montserrat', sans-serif;
+  --font-family: 'Manrope', 'Inter', sans-serif;
   
   /* Liquid Pastel Colors */
-  --lavender: #f1e4fc;
-  --peach: #fef0e3;
-  --teal: #dcfbf6;
+  --lavender: #d6bdf5;
+  --peach: #ffdcc4;
+  --teal: #a2f2e4;
   
   /* Base Colors */
   --text-main: #121212;
@@ -54,11 +54,11 @@ body {
   height: 100dvh;
   /* Fluid liquid gradient background matching the mockup */
   background: 
-    radial-gradient(at 0% 0%, rgba(241, 228, 252, 1) 0px, transparent 55%),
-    radial-gradient(at 100% 0%, rgba(254, 240, 227, 1) 0px, transparent 55%),
-    radial-gradient(at 100% 100%, rgba(220, 251, 246, 1) 0px, transparent 55%),
-    radial-gradient(at 0% 100%, rgba(245, 240, 255, 1) 0px, transparent 55%),
-    #ffffff;
+    radial-gradient(at 0% 0%, rgba(176, 50, 208, 0.65) 0px, transparent 60%),
+    radial-gradient(at 100% 0%, rgba(254, 130, 90, 0.6) 0px, transparent 60%),
+    radial-gradient(at 100% 100%, rgba(30, 180, 160, 0.65) 0px, transparent 60%),
+    radial-gradient(at 0% 100%, rgba(198, 70, 150, 0.65) 0px, transparent 60%),
+    #debce4;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -77,7 +77,7 @@ body {
 
 /* Typography */
 h1, h2, h3 {
-  font-family: 'Outfit', sans-serif;
+  font-family: var(--font-family);
   font-weight: 700;
   color: var(--text-main);
   letter-spacing: -0.5px;
@@ -283,23 +283,24 @@ h1, h2, h3 {
   background: rgba(0, 0, 0, 0.05);
 }
 
-/* Floating Navigation Capsule */
+/* Attached Navigation Menu */
 .bottom-nav {
   position: absolute;
-  bottom: 24px;
-  left: 20px;
-  right: 20px;
-  height: 68px;
-  background: rgba(255, 255, 255, 0.65);
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: calc(72px + env(safe-area-inset-bottom, 0px));
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  border-radius: 24px 24px 0 0;
+  border: none;
+  border-top: 1.2px solid rgba(255, 255, 255, 0.45);
+  background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(25px);
   -webkit-backdrop-filter: blur(25px);
-  border: 1.2px solid rgba(255, 255, 255, 0.55);
-  border-radius: 34px; /* Perfect rounded capsule */
   display: flex;
   justify-content: space-around;
   align-items: center;
-  padding: 0 8px;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.04);
   z-index: 100;
 }
 
@@ -324,7 +325,7 @@ h1, h2, h3 {
   box-shadow: 0 8px 20px rgba(0,0,0,0.15);
 }
 
-.nav-item span {
+.nav-item .nav-label {
   display: none; /* Hide labels for minimalist icon-only nav bar */
 }
 
@@ -372,9 +373,9 @@ h1, h2, h3 {
 .success-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(255, 255, 255, 0.5);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: rgba(255, 255, 255, 0.3) !important;
+  backdrop-filter: blur(25px) !important;
+  -webkit-backdrop-filter: blur(25px) !important;
   display: flex;
   justify-content: center;
   align-items: center;

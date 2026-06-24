@@ -69,11 +69,8 @@ const Book = ({ onBookingComplete, setTab }) => {
         
         {/* Header slogan styling matching ref */}
         <div style={{ marginBottom: '20px' }}>
-          <div className="logo-title-top" style={{ fontSize: '1.4rem' }}>
-            BO<span className="logo-o-capsule" style={{ width: '24px', height: '12px' }}></span>K YOUR
-          </div>
-          <div className="logo-title-bottom" style={{ fontSize: '1.7rem', marginBottom: '8px' }}>
-            BEAUTY MOMENT
+          <div className="logo-title-bottom" style={{ fontSize: '1.7rem', marginBottom: '8px', marginTop: '8px' }}>
+            ЗАПИСЬ НА СЕАНС
           </div>
         </div>
 
@@ -229,7 +226,7 @@ const Book = ({ onBookingComplete, setTab }) => {
           className="fade-in"
           style={{
             position: 'absolute',
-            bottom: '104px', // Above bottom-nav
+            bottom: '80px', // Above bottom-nav
             left: '20px',
             right: '20px',
             height: '78px',
@@ -257,7 +254,7 @@ const Book = ({ onBookingComplete, setTab }) => {
             className="btn-primary"
             style={{ width: 'auto', padding: '12px 28px', fontSize: '0.88rem' }}
           >
-            Booking Now
+            Записаться
           </button>
         </div>
       )}

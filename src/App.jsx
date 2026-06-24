@@ -132,7 +132,7 @@ function App() {
           <span className="nav-icon">
             <HomeIcon size={22} />
           </span>
-          <span>Главная</span>
+          <span className="nav-label">Главная</span>
         </button>
         <button 
           onClick={() => setTab('book')} 
@@ -141,7 +141,7 @@ function App() {
           <span className="nav-icon">
             <CalendarIcon size={22} />
           </span>
-          <span>Записаться</span>
+          <span className="nav-label">Записаться</span>
         </button>
         <button 
           onClick={() => setTab('bookings')} 
@@ -150,7 +150,7 @@ function App() {
           <span className="nav-icon">
             <BookingsIcon size={22} />
           </span>
-          <span>Мои записи</span>
+          <span className="nav-label">Мои записи</span>
         </button>
         <button 
           onClick={() => setTab('portfolio')} 
@@ -159,7 +159,7 @@ function App() {
           <span className="nav-icon">
             <HeartIcon size={22} />
           </span>
-          <span>Портфолио</span>
+          <span className="nav-label">Портфолио</span>
         </button>
       </nav>
     </div>

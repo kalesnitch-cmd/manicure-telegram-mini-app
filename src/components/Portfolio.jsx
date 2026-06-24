@@ -28,11 +28,8 @@ const Portfolio = () => {
       
       {/* Slogan headers */}
       <div style={{ marginBottom: '20px' }}>
-        <div className="logo-title-top" style={{ fontSize: '1.4rem' }}>
-          BO<span className="logo-o-capsule" style={{ width: '24px', height: '12px' }}></span>K YOUR
-        </div>
-        <div className="logo-title-bottom" style={{ fontSize: '1.7rem', marginBottom: '8px' }}>
-          NAIL PORTFOLIO
+        <div className="logo-title-bottom" style={{ fontSize: '1.7rem', marginBottom: '8px', marginTop: '8px' }}>
+          ПОРТФОЛИО
         </div>
       </div>
 

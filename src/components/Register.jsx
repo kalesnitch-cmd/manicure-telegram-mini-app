@@ -65,11 +65,8 @@ const Register = ({ onRegister, telegramUser, telegramRequired }) => {
         
         {/* Header slogan styling matching ref */}
         <div style={{ marginBottom: '24px' }}>
-          <div className="logo-title-top" style={{ fontSize: '1.25rem', justifyContent: 'center', letterSpacing: '1px' }}>
-            BO<span className="logo-o-capsule" style={{ width: '20px', height: '10px' }}></span>K YOUR
-          </div>
-          <div className="logo-title-bottom" style={{ fontSize: '1.5rem', marginBottom: '4px' }}>
-            BEAUTY MOMENT
+          <div className="logo-title-bottom" style={{ fontSize: '1.5rem', marginBottom: '4px', marginTop: '8px' }}>
+            МОМЕНТ КРАСОТЫ
           </div>
           <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', fontWeight: '500' }}>
             Давайте знакомиться

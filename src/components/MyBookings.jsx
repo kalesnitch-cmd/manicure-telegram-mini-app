@@ -30,11 +30,8 @@ const MyBookings = ({ setTab, refreshTrigger }) => {
       
       {/* Slogan headers */}
       <div style={{ marginBottom: '20px' }}>
-        <div className="logo-title-top" style={{ fontSize: '1.4rem' }}>
-          BO<span className="logo-o-capsule" style={{ width: '24px', height: '12px' }}></span>K YOUR
-        </div>
-        <div className="logo-title-bottom" style={{ fontSize: '1.7rem', marginBottom: '8px' }}>
-          APPOINTMENTS
+        <div className="logo-title-bottom" style={{ fontSize: '1.7rem', marginBottom: '8px', marginTop: '8px' }}>
+          МОИ ЗАПИСИ
         </div>
       </div>
 
@@ -66,8 +63,9 @@ const MyBookings = ({ setTab, refreshTrigger }) => {
               key={b.id} 
               className="glass-card" 
               style={{ 
-                borderLeft: '4px solid var(--text-main)', 
-                background: 'rgba(255,255,255,0.6)', 
+                border: '1px solid rgba(255,255,255,0.6)',
+                borderLeft: '4px solid rgba(216, 110, 248, 0.6)', 
+                background: 'rgba(255,255,255,0.65)', 
                 padding: '20px 16px',
                 textAlign: 'left',
                 borderRadius: '20px',

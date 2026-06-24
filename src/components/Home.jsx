@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { BellIcon, SearchIcon, ThumbUpIcon, StarIcon } from './Icons';
 
 const Home = ({ user, setTab }) => {
-  const [activeCategory, setActiveCategory] = useState('Nail');
+  const [activeCategory, setActiveCategory] = useState('Маникюр');
   const [likes, setLikes] = useState(128);
   const [hasLiked, setHasLiked] = useState(false);
 
@@ -31,17 +31,17 @@ const Home = ({ user, setTab }) => {
             onError={(e) => { e.target.src = 'images/avatar.png'; }}
           />
           <div>
-            <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', fontWeight: '500' }}>Hey {user.name} 👋</div>
+            <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', fontWeight: '500' }}>Привет, {user.name} 👋</div>
           </div>
         </div>
 
         {/* Action Buttons Right */}
         <div style={{ display: 'flex', gap: '8px' }}>
-          <button style={{ width: '42px', height: '42px', borderRadius: '50%', border: 'none', background: 'rgba(255,255,255,0.5)', display: 'flex', justifyContent: 'center', align_items: 'center', cursor: 'pointer', color: 'var(--text-main)' }}>
+          <button style={{ width: '42px', height: '42px', borderRadius: '50%', border: 'none', background: 'rgba(255,255,255,0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center', cursor: 'pointer', color: 'var(--text-main)' }}>
             <SearchIcon size={18} />
           </button>
           
-          <button style={{ width: '42px', height: '42px', borderRadius: '50%', border: 'none', background: 'rgba(255,255,255,0.5)', display: 'flex', justifyContent: 'center', align_items: 'center', cursor: 'pointer', position: 'relative', color: 'var(--text-main)' }}>
+          <button style={{ width: '42px', height: '42px', borderRadius: '50%', border: 'none', background: 'rgba(255,255,255,0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center', cursor: 'pointer', position: 'relative', color: 'var(--text-main)' }}>
             <BellIcon size={18} />
             <span style={{ position: 'absolute', top: '0', right: '0', background: 'var(--text-main)', color: 'white', fontSize: '0.65rem', fontWeight: '700', borderRadius: '50%', width: '16px', height: '16px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               3
@@ -52,17 +52,14 @@ const Home = ({ user, setTab }) => {
 
       {/* Main Slogan Header */}
       <div>
-        <div className="logo-title-top">
-          BO<span className="logo-o-capsule"></span>K YOUR
-        </div>
-        <div className="logo-title-bottom">
-          BEAUTY MOMENT
+        <div className="logo-title-bottom" style={{ marginTop: '8px' }}>
+          МОМЕНТ КРАСОТЫ
         </div>
       </div>
 
       {/* Categories Filter Pills */}
       <div className="category-container">
-        {['All', 'Nail', 'Lash', 'Beauty', 'Makeup'].map((cat) => {
+        {['Все', 'Маникюр', 'Ресницы', 'Брови/Ресницы', 'Макияж'].map((cat) => {
           const isActive = activeCategory === cat;
           return (
             <button 
@@ -70,7 +67,7 @@ const Home = ({ user, setTab }) => {
               onClick={() => setActiveCategory(cat)}
               className={`category-pill ${isActive ? 'active' : ''}`}
             >
-              {cat === 'Nail' ? 'Nail Specialist' : cat === 'Lash' ? 'Lash Artist' : cat === 'Beauty' ? 'Beauty Artist' : cat === 'All' ? 'All' : cat}
+              {cat}
             </button>
           );
         })}
@@ -111,10 +108,10 @@ const Home = ({ user, setTab }) => {
             {/* Left elements inside photo */}
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '8px' }}>
               <div style={{ background: 'rgba(255, 255, 255, 0.25)', backdropFilter: 'blur(10px)', color: 'white', padding: '4px 10px', borderRadius: '50px', fontSize: '0.72rem', fontWeight: '500', letterSpacing: '0.5px' }}>
-                Nail Specialist
+                Мастер маникюра
               </div>
               <div style={{ color: 'white', fontSize: '1.45rem', fontWeight: '700', textShadow: '0 2px 8px rgba(0,0,0,0.3)', fontFamily: 'var(--font-family)' }}>
-                Valeria Novak
+                Валерия Новак
               </div>
               {/* "Booking Now" button over the card */}
               <button 
@@ -131,7 +128,7 @@ const Home = ({ user, setTab }) => {
                   boxShadow: '0 8px 20px rgba(0,0,0,0.1)'
                 }}
               >
-                Booking Now
+                Записаться
               </button>
             </div>
 
