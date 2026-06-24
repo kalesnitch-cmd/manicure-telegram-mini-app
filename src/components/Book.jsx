@@ -1,184 +1,311 @@
-import { useMemo, useState } from 'react';
-import { api, money } from '../lib/api';
-import { ClockIcon, CheckCircleIcon, LocationIcon } from './Icons';
+import React, { useState } from 'react';
+import { ClockIcon, LocationIcon, CheckCircleIcon } from './Icons';
 
-const dateKey = (date) => new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Moscow' }).format(date);
-const minutes = (time) => Number(time.slice(0, 2)) * 60 + Number(time.slice(3, 5));
-const timeText = (value) => `${String(Math.floor(value / 60)).padStart(2, '0')}:${String(value % 60).padStart(2, '0')}`;
-const localMs = (date, time) => new Date(`${date}T${time}:00+03:00`).getTime();
+const SERVICES = [
+  { id: 'classic', name: 'Комби-маникюр без покрытия', price: '1 200 ₽', duration: '60 мин' },
+  { id: 'gel', name: 'Маникюр + гель-лак (однотонный)', price: '1 800 ₽', duration: '90 мин' },
+  { id: 'design', name: 'Маникюр + дизайн (френч/фольга)', price: '2 200 ₽', duration: '120 мин' },
+  { id: 'extension', name: 'Наращивание ногтей (до 3ки)', price: '3 000 ₽', duration: '150-180 мин' },
+];
 
-export default function Book({ data, setTab, setRefresh }) {
-  const services = data.services || [];
-  const [serviceId, setServiceId] = useState(services[0]?.id || '');
-  const [selectedDate, setSelectedDate] = useState('');
-  const [selectedTime, setSelectedTime] = useState('');
-  const [currentMonthIdx, setCurrentMonthIdx] = useState(0);
-  const [busy, setBusy] = useState(false);
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState(null);
-  const [now] = useState(() => Date.now());
-  const service = services.find((item) => item.id === serviceId);
+const TIME_SLOTS = [
+  { time: '10:30 - 11:30', available: true },
+  { time: '11:45 - 12:45', available: false },
+  { time: '13:00 - 14:00', available: true },
+  { time: '14:30 - 15:30', available: true },
+  { time: '16:00 - 17:00', available: false },
+  { time: '17:30 - 18:30', available: true },
+];
 
-  const days = useMemo(() => {
-    const result = [];
-    const horizon = data.settings?.booking_horizon_days || 60;
-    for (let i = 0; i < horizon; i += 1) {
-      const date = new Date(now + i * 86400000);
-      const key = dateKey(date);
-      const weekday = date.getDay();
-      const schedule = data.schedule?.find((item) => item.weekday === weekday);
-      const blocked = data.blockedDates?.some((item) => item.blocked_date === key);
-      result.push({ key, date, schedule, blocked });
-    }
-    return result;
-  }, [data, now]);
+const Book = ({ onBookingComplete, setTab }) => {
+  const [selectedService, setSelectedService] = useState(SERVICES[1]); // Default to gel polish
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedTime, setSelectedTime] = useState(null);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [successDetails, setSuccessDetails] = useState(null);
 
-  const slotsFor = (day) => {
-    if (!day?.schedule?.is_working || day.blocked || !service) return [];
-    const slots = [];
-    const start = minutes(day.schedule.start_time);
-    const end = minutes(day.schedule.end_time);
-    for (let value = start; value + service.duration_minutes <= end; value += day.schedule.slot_interval_minutes) {
-      const time = timeText(value);
-      const from = localMs(day.key, time);
-      const to = from + service.duration_minutes * 60000;
-      const occupied = data.occupied?.some((item) => new Date(item.starts_at).getTime() < to && new Date(item.ends_at).getTime() > from);
-      slots.push({ time, available: !occupied && from > now + 5 * 60000 });
-    }
-    return slots;
+  const monthName = 'Июнь 2026';
+  const daysInJune = 30;
+  const daysArray = Array.from({ length: daysInJune }, (_, i) => i + 1);
+
+  const handleDaySelect = (day) => {
+    if (day < 11) return; // Only allow future dates
+    setSelectedDate(day);
+    setSelectedTime(null); // Reset time when changing date
   };
 
-  const selectedDay = days.find((day) => day.key === selectedDate);
-  const slots = slotsFor(selectedDay);
+  const handleBooking = () => {
+    if (!selectedService || !selectedDate || !selectedTime) return;
 
-  const calendarMonths = useMemo(() => {
-    const uniqueMonths = [];
-    days.forEach((d) => {
-      const y = d.date.getFullYear();
-      const m = d.date.getMonth();
-      if (!uniqueMonths.some((item) => item.year === y && item.month === m)) {
-        uniqueMonths.push({ year: y, month: m });
-      }
-    });
+    const formattedDate = `${selectedDate} июня 2026`;
+    const newBooking = {
+      id: Date.now().toString(),
+      service: selectedService.name,
+      price: selectedService.price,
+      date: formattedDate,
+      time: selectedTime,
+      status: 'active',
+      timestamp: Date.now()
+    };
 
-    return uniqueMonths.map(({ year, month }) => {
-      const title = new Intl.DateTimeFormat('ru-RU', { month: 'long', year: 'numeric' }).format(new Date(year, month, 1));
-      const capitalizedTitle = title.charAt(0).toUpperCase() + title.slice(1);
+    const existing = JSON.parse(localStorage.getItem('nails_bookings') || '[]');
+    existing.unshift(newBooking);
+    localStorage.setItem('nails_bookings', JSON.stringify(existing));
 
-      const firstDayDate = new Date(year, month, 1);
-      const firstDayWeekday = firstDayDate.getDay();
-      const leadingSpacers = firstDayWeekday === 0 ? 6 : firstDayWeekday - 1;
-
-      const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-      const monthDays = [];
-      for (let d = 1; d <= daysInMonth; d += 1) {
-        const dateObj = new Date(year, month, d);
-        const key = dateKey(dateObj);
-        const dayData = days.find((item) => item.key === key);
-        monthDays.push({
-          dayNumber: d,
-          key,
-          dateObj,
-          dayData,
-        });
-      }
-
-      return {
-        title: capitalizedTitle,
-        leadingSpacers,
-        monthDays,
-      };
-    });
-  }, [days]);
-
-  const formatSelectedDateShort = (dateStr) => {
-    if (!dateStr) return '';
-    const [year, month, day] = dateStr.split('-').map(Number);
-    const dateObj = new Date(year, month - 1, day);
-    return new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long' }).format(dateObj);
+    setSuccessDetails(newBooking);
+    setShowSuccess(true);
   };
 
-  const book = async () => {
-    setBusy(true); setError('');
-    try {
-      const { booking } = await api('create_booking', { serviceId, date: selectedDate, time: selectedTime });
-      setSuccess(booking); setRefresh((value) => value + 1);
-    } catch (err) { setError(err.message); } finally { setBusy(false); }
+  const handleSuccessClose = () => {
+    setShowSuccess(false);
+    onBookingComplete();
+    setTab('bookings'); // Redirect to My Bookings
   };
 
-  const activeMonth = calendarMonths[currentMonthIdx] || calendarMonths[0];
+  return (
+    <>
+      {/* Scrollable Area */}
+      <div className="scroll-container fade-in" style={{ padding: '20px 20px 180px 20px' }}>
+        
+        {/* Header slogan styling matching ref */}
+        <div style={{ marginBottom: '20px' }}>
+          <div className="logo-title-top" style={{ fontSize: '1.4rem' }}>
+            BO<span className="logo-o-capsule" style={{ width: '24px', height: '12px' }}></span>K YOUR
+          </div>
+          <div className="logo-title-bottom" style={{ fontSize: '1.7rem', marginBottom: '8px' }}>
+            BEAUTY MOMENT
+          </div>
+        </div>
 
-  return <><div className={`scroll-container fade-in page ${selectedTime ? 'has-cta' : ''}`}><h2>Записаться</h2>
-    <section className="glass-panel booking-section"><h3>1. Выберите услугу</h3>{services.map((item) => <button className={`service-row ${serviceId === item.id ? 'selected' : ''}`} key={item.id} onClick={() => { setServiceId(item.id); setSelectedDate(''); setSelectedTime(''); }}>
-      <span><b>{item.name}</b><small><ClockIcon size={12} /> {item.duration_minutes} мин</small></span><strong>{money(item.price)}</strong>
-    </button>)}</section>
-    <section className="glass-panel booking-section">
-      <h3>2. Выберите дату</h3>
-      <div className="calendar-container">
-        {activeMonth && (
-          <div className="calendar-month">
-            <div className="calendar-month-header">
-              <button
-                type="button"
-                className="calendar-nav-btn"
-                disabled={currentMonthIdx === 0}
-                onClick={() => setCurrentMonthIdx((prev) => Math.max(0, prev - 1))}
-              >
-                &larr;
-              </button>
-              <h4 className="calendar-month-title">{activeMonth.title}</h4>
-              <button
-                type="button"
-                className="calendar-nav-btn"
-                disabled={currentMonthIdx === calendarMonths.length - 1}
-                onClick={() => setCurrentMonthIdx((prev) => Math.min(calendarMonths.length - 1, prev + 1))}
-              >
-                &rarr;
-              </button>
-            </div>
-            <div className="calendar-weekdays">
-              <span>Пн</span><span>Вт</span><span>Ср</span><span>Чт</span><span>Пт</span><span>Сб</span><span>Вс</span>
-            </div>
-            <div className="calendar-days-grid">
-              {Array.from({ length: activeMonth.leadingSpacers }).map((_, idx) => (
-                <div key={`spacer-${idx}`} className="calendar-day-spacer"></div>
-              ))}
-              {activeMonth.monthDays.map((day) => {
-                const isTodayOrFuture = day.dayData !== undefined;
-                const available = isTodayOrFuture && slotsFor(day.dayData).some((slot) => slot.available);
-                const isSelected = selectedDate === day.key;
+        {/* Step 1: Select Service */}
+        <div className="glass-panel" style={{ padding: '18px', marginBottom: '20px', borderRadius: '24px' }}>
+          <h3 style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: '14px', textTransform: 'uppercase', letterSpacing: '1px' }}>
+            1. Выберите процедуру
+          </h3>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            {SERVICES.map((s) => {
+              const isSelected = selectedService.id === s.id;
+              return (
+                <div 
+                  key={s.id}
+                  onClick={() => setSelectedService(s)}
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    padding: '14px 16px',
+                    borderRadius: 'var(--border-radius-sm)',
+                    border: isSelected ? '1.5px solid var(--text-main)' : '1px solid rgba(255,255,255,0.4)',
+                    background: isSelected ? 'rgba(255,255,255,0.7)' : 'rgba(255,255,255,0.25)',
+                    cursor: 'pointer',
+                    transition: 'var(--transition)'
+                  }}
+                >
+                  <div style={{ textAlign: 'left', flex: 1, paddingRight: '8px' }}>
+                    <div style={{ fontWeight: '700', fontSize: '0.88rem', color: 'var(--text-main)' }}>{s.name}</div>
+                    <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '4px', marginTop: '4px' }}>
+                      <ClockIcon size={12} color="var(--text-muted)" />
+                      <span>{s.duration}</span>
+                    </div>
+                  </div>
+                  <div style={{ fontWeight: '800', color: 'var(--text-main)', fontSize: '0.92rem' }}>{s.price}</div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
 
+        {/* Step 2: Custom Calendar Grid (Mockup Style) */}
+        <div className="glass-panel" style={{ padding: '18px', marginBottom: '20px', borderRadius: '24px' }}>
+          <h3 style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: '14px', textTransform: 'uppercase', letterSpacing: '1px' }}>
+            2. Выберите дату ({monthName})
+          </h3>
+          
+          {/* Weekday labels */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '4px', textAlign: 'center', fontWeight: '700', fontSize: '0.72rem', color: 'var(--text-muted)', marginBottom: '12px' }}>
+            <div>Пн</div><div>Вт</div><div>Ср</div><div>Чт</div><div>Пт</div><div>Сб</div><div>Вс</div>
+          </div>
+
+          {/* Days Grid */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '8px 4px' }}>
+            {daysArray.map((day) => {
+              const isToday = day === 10;
+              const isPast = day < 10;
+              const isAvailable = day >= 11;
+              const isSelected = selectedDate === day;
+
+              return (
+                <button
+                  key={day}
+                  onClick={() => handleDaySelect(day)}
+                  disabled={!isAvailable}
+                  style={{
+                    width: '38px',
+                    height: '38px',
+                    borderRadius: '50%',
+                    border: 'none',
+                    margin: '0 auto',
+                    background: isSelected 
+                      ? 'var(--button-dark)' 
+                      : isToday
+                      ? 'rgba(0,0,0,0.05)'
+                      : isAvailable 
+                      ? 'rgba(255,255,255,0.45)' 
+                      : 'transparent',
+                    color: isSelected 
+                      ? 'white' 
+                      : isToday
+                      ? 'var(--text-main)'
+                      : isAvailable 
+                      ? 'var(--text-main)' 
+                      : 'rgba(0, 0, 0, 0.2)',
+                    fontWeight: isSelected || isToday ? '700' : '500',
+                    fontSize: '0.85rem',
+                    cursor: isAvailable ? 'pointer' : 'not-allowed',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    border: isToday && !isSelected ? '1.5px solid var(--text-main)' : 'none',
+                    transition: 'var(--transition)',
+                    boxShadow: isSelected ? '0 6px 12px rgba(0,0,0,0.15)' : 'none'
+                  }}
+                >
+                  {day}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Step 3: Select Time Slot (Pills) */}
+        {selectedDate && (
+          <div className="glass-panel fade-in" style={{ padding: '18px', marginBottom: '24px', borderRadius: '24px' }}>
+            <h3 style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: '14px', textTransform: 'uppercase', letterSpacing: '1px' }}>
+              3. Время сеанса
+            </h3>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+              {TIME_SLOTS.map((slot, index) => {
+                const isSelected = selectedTime === slot.time;
                 return (
                   <button
-                    key={day.key}
-                    type="button"
-                    disabled={!available}
-                    className={`calendar-day-btn ${isSelected ? 'selected' : ''} ${!isTodayOrFuture ? 'past' : ''}`}
-                    onClick={() => {
-                      setSelectedDate(day.key);
-                      setSelectedTime('');
+                    key={index}
+                    onClick={() => setSelectedTime(slot.time)}
+                    disabled={!slot.available}
+                    style={{
+                      padding: '12px 14px',
+                      borderRadius: '50px', // Pill style
+                      border: 'none',
+                      background: isSelected 
+                        ? 'var(--button-dark)' 
+                        : slot.available 
+                        ? 'rgba(255,255,255,0.5)' 
+                        : 'rgba(0,0,0,0.03)',
+                      color: isSelected 
+                        ? 'white' 
+                        : slot.available 
+                        ? 'var(--text-main)' 
+                        : 'rgba(0,0,0,0.22)',
+                      fontWeight: '600',
+                      fontSize: '0.82rem',
+                      textDecoration: slot.available ? 'none' : 'line-through',
+                      cursor: slot.available ? 'pointer' : 'not-allowed',
+                      transition: 'var(--transition)',
+                      boxShadow: isSelected ? '0 6px 12px rgba(0,0,0,0.1)' : 'none'
                     }}
                   >
-                    {day.dayNumber}
+                    {slot.time}
                   </button>
                 );
               })}
             </div>
           </div>
         )}
+
       </div>
-    </section>
-    {selectedDate && <section className="glass-panel booking-section"><h3>3. Выберите время</h3><div className="time-grid">{slots.map((slot) => <button key={slot.time} disabled={!slot.available} className={selectedTime === slot.time ? 'selected' : ''} onClick={() => setSelectedTime(slot.time)}>{slot.time}</button>)}</div></section>}
-    {error && <p className="form-error">{error}</p>}
-  </div>
-  {selectedTime && (
-    <div className="booking-cta-container">
-      <button className="btn-primary" disabled={busy} onClick={book}>
-        {busy ? 'Сохраняем…' : `Записаться ${formatSelectedDateShort(selectedDate)} в ${selectedTime}`}
-      </button>
-    </div>
-  )}
-  {success && <div className="success-overlay"><div className="success-box"><CheckCircleIcon size={52} /><h2>Запись подтверждена!</h2><p>{service?.name}<br/><b>{new Intl.DateTimeFormat('ru-RU', { dateStyle: 'long', timeZone: 'Europe/Moscow' }).format(new Date(success.starts_at))} в {selectedTime}</b></p><div className="location-line"><LocationIcon size={16}/>{data.settings.address}</div><button className="btn-primary" onClick={() => setTab('bookings')}>Мои записи</button></div></div>}
-  </>;
-}
+
+      {/* Floating Bottom Booking Summary Sheet (mockup style) */}
+      {selectedDate && selectedTime && (
+        <div 
+          className="fade-in"
+          style={{
+            position: 'absolute',
+            bottom: '104px', // Above bottom-nav
+            left: '20px',
+            right: '20px',
+            height: '78px',
+            background: 'rgba(255, 255, 255, 0.72)',
+            backdropFilter: 'blur(20px)',
+            border: '1.2px solid rgba(255, 255, 255, 0.6)',
+            borderRadius: '26px',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            padding: '0 20px',
+            boxShadow: '0 16px 36px rgba(0, 0, 0, 0.05)',
+            zIndex: 90
+          }}
+        >
+          <div style={{ textAlign: 'left' }}>
+            <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Выбранная дата</div>
+            <div style={{ fontSize: '0.88rem', fontWeight: '800', color: 'var(--text-main)', marginTop: '2px' }}>
+              Июнь {selectedDate}, {selectedTime.split(' - ')[0]}
+            </div>
+          </div>
+          
+          <button 
+            onClick={handleBooking}
+            className="btn-primary"
+            style={{ width: 'auto', padding: '12px 28px', fontSize: '0.88rem' }}
+          >
+            Booking Now
+          </button>
+        </div>
+      )}
+
+      {/* Success Popup Modal */}
+      {showSuccess && successDetails && (
+        <div className="success-overlay">
+          <div className="success-box">
+            <div className="success-icon-container">
+              <CheckCircleIcon size={34} color="var(--text-main)" />
+            </div>
+            <h2 style={{ fontSize: '1.5rem', marginBottom: '12px', fontFamily: 'Outfit' }}>Запись подтверждена!</h2>
+            
+            <p style={{ fontSize: '0.88rem', color: 'var(--text-muted)', marginBottom: '20px', lineHeight: '1.5' }}>
+              Вы успешно записались на <strong>{successDetails.service}</strong>.<br />
+              Ждем вас <strong>{successDetails.date}</strong> в <strong>{successDetails.time.split(' - ')[0]}</strong>.
+            </p>
+            
+            <div 
+              className="glass-card" 
+              style={{ 
+                textAlign: 'left', 
+                background: 'rgba(255, 255, 255, 0.5)', 
+                border: '1px solid rgba(255, 255, 255, 0.6)', 
+                padding: '14px 16px', 
+                marginBottom: '20px', 
+                width: '100%', 
+                display: 'flex', 
+                alignItems: 'flex-start', 
+                gap: '10px',
+                borderRadius: '16px'
+              }}
+            >
+              <div style={{ marginTop: '2px' }}><LocationIcon size={16} /></div>
+              <div>
+                <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', fontWeight: '600' }}>Адрес студии:</div>
+                <div style={{ fontSize: '0.82rem', fontWeight: '700', color: 'var(--text-main)', marginTop: '2px' }}>ул. Элегантная, д. 15, оф. 302</div>
+              </div>
+            </div>
+
+            <button onClick={handleSuccessClose} className="btn-primary">
+              Отлично
+            </button>
+          </div>
+        </div>
+      )}
+    </>
+  );
+};
+
+export default Book;

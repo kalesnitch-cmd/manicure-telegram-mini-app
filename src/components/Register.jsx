@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { api } from '../lib/api';
 
 const Register = ({ onRegister, telegramUser, telegramRequired }) => {
@@ -60,12 +60,21 @@ const Register = ({ onRegister, telegramUser, telegramRequired }) => {
   };
 
   return (
-    <div className="scroll-container fade-in" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', height: '100%', padding: '24px' }}>
+    <div className="scroll-container fade-in" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', height: '100%', padding: '24px 20px 95px 20px' }}>
       <div className="glass-panel" style={{ textAlign: 'center' }}>
-        <h1 style={{ fontSize: '1.6rem', marginBottom: '8px', color: 'var(--text-main)' }}>Привет!</h1>
-        <p style={{ color: 'var(--text-muted)', marginBottom: '32px', fontSize: '0.9rem', fontWeight: '500' }}>
-          давай знакомиться ✨
-        </p>
+        
+        {/* Header slogan styling matching ref */}
+        <div style={{ marginBottom: '24px' }}>
+          <div className="logo-title-top" style={{ fontSize: '1.25rem', justifyContent: 'center', letterSpacing: '1px' }}>
+            BO<span className="logo-o-capsule" style={{ width: '20px', height: '10px' }}></span>K YOUR
+          </div>
+          <div className="logo-title-bottom" style={{ fontSize: '1.5rem', marginBottom: '4px' }}>
+            BEAUTY MOMENT
+          </div>
+          <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', fontWeight: '500' }}>
+            Давайте знакомиться
+          </p>
+        </div>
 
         <form onSubmit={handleSubmit}>
           <div className="input-group">
@@ -98,24 +107,25 @@ const Register = ({ onRegister, telegramUser, telegramRequired }) => {
           </div>
 
           {error && (
-            <p style={{ color: 'var(--danger)', fontSize: '0.85rem', marginBottom: '16px', fontWeight: '500' }}>
+            <p style={{ color: 'var(--danger)', fontSize: '0.8rem', marginBottom: '16px', fontWeight: '600' }}>
               {error}
             </p>
           )}
 
-          {telegramRequired && <p className="form-error">Для регистрации откройте Mini App из Telegram-бота.</p>}
+          {telegramRequired && <p className="form-error" style={{ color: 'var(--danger)', fontSize: '0.8rem', marginBottom: '16px', fontWeight: '600' }}>Для регистрации откройте Mini App из Telegram-бота.</p>}
+          
           <button type="submit" className="btn-primary" disabled={isSubmitting || telegramRequired}>
             {isSubmitting ? (
               <span className="spinner" style={{
                 display: 'inline-block',
-                width: '20px',
-                height: '20px',
-                border: '3px solid rgba(255,255,255,0.3)',
+                width: '18px',
+                height: '18px',
+                border: '2px solid rgba(255,255,255,0.3)',
                 borderRadius: '50%',
                 borderTopColor: '#fff',
-                animation: 'spin 1s ease-in-out infinite'
+                animation: 'spin 1s linear infinite'
               }}></span>
-            ) : 'Зарегистрироваться ✨'}
+            ) : 'Зарегистрироваться'}
           </button>
         </form>
       </div>

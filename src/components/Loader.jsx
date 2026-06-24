@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const Loader = ({ onLoaded }) => {
   const [visible, setVisible] = useState(true);
@@ -21,17 +21,24 @@ const Loader = ({ onLoaded }) => {
 
   return (
     <div className="loader-screen" style={{ opacity: visible ? 1 : 0 }}>
-      <div className="loader-logo-container">
+      <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <div className="loader-logo-bg"></div>
-        <div className="loader-logo">Nails</div>
+        
+        {/* Styled logo mockup layout */}
+        <div className="logo-title-top" style={{ fontSize: '1.6rem', justifyContent: 'center', letterSpacing: '1px' }}>
+          BO<span className="logo-o-capsule" style={{ width: '22px', height: '11px', borderWidth: '1.2px' }}></span>K YOUR
+        </div>
+        <div className="logo-title-bottom" style={{ fontSize: '1.9rem', marginBottom: '8px' }}>
+          BEAUTY MOMENT
+        </div>
       </div>
-      <div style={{ fontFamily: 'var(--font-sans)', fontWeight: '600', letterSpacing: '2px', fontSize: '1.1rem', color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '30px' }}>
-        & Beauty
-      </div>
+      
       <div className="loader-progress-track">
         <div className="loader-progress-bar"></div>
       </div>
-      <div className="loader-text">загружаем красоту...</div>
+      <div className="loader-text" style={{ fontSize: '0.72rem', letterSpacing: '1.5px', marginTop: '16px' }}>
+        Загружаем красоту...
+      </div>
     </div>
   );
 };
